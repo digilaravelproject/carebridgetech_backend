@@ -53,6 +53,7 @@ app.use('/api/products', require('./src/routes/products'));
 app.use('/api/logos', require('./src/routes/logos'));
 app.use('/api/forms', require('./src/routes/forms'));
 app.use('/api/navigation', require('./src/routes/navigation'));
+app.use('/api/news', require('./src/routes/news'));
 
 // Health check endpoint
 app.get('/health', (req, res) => {

@@ -13,7 +13,10 @@ const {
   Product,
   CompanyLogo,
   FormSubmission,
-  MenuItem
+  MenuItem,
+  NewsArticle,
+  NewsPageSettings,
+  Platform
 } = require('../models');
 
 const adminJs = new AdminJS({
@@ -152,6 +155,140 @@ const adminJs = new AdminJS({
         editProperties: ['menuKey', 'itemKey', 'label', 'route', 'displayOrder', 'status'],
         filterProperties: ['menuKey', 'status'],
         sort: { sortBy: 'displayOrder', direction: 'asc' }
+      }
+    },
+    {
+      resource: NewsArticle,
+      options: {
+        parent: { name: 'News Management', icon: 'MessageSquare' },
+        listProperties: ['title', 'author', 'isFeatured', 'status', 'displayOrder'],
+        editProperties: ['title', 'summary', 'content', 'imageUrl', 'author', 'authorPosition', 'authorCompany', 'companyLogoUrl', 'videoUrl', 'isFeatured', 'displayOrder', 'status'],
+        filterProperties: ['author', 'authorCompany', 'isFeatured', 'status'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          summary: {
+            type: 'textarea',
+            props: {
+              rows: 3
+            }
+          },
+          content: {
+            type: 'textarea',
+            props: {
+              rows: 8
+            }
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/news') } },
+          properties: { 
+            key: 'imageUrl', 
+            bucket: 'newsImages',
+            file: 'imageFile',
+            filePath: 'imageFilePath',
+            filesToDelete: 'imageFilesToDelete'
+          }
+        }),
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/news') } },
+          properties: { 
+            key: 'companyLogoUrl', 
+            bucket: 'companyLogos',
+            file: 'logoFile',
+            filePath: 'logoFilePath',
+            filesToDelete: 'logoFilesToDelete'
+          }
+        })
+      ]
+    },
+    {
+      resource: NewsPageSettings,
+      options: {
+        parent: { name: 'News Management', icon: 'MessageSquare' },
+        listProperties: ['mainHeading', 'socialHeading', 'updatedAt'],
+        editProperties: [
+          'mainHeading', 
+          'mainHeadingHighlight', 
+          'mainDescription', 
+          'backgroundImageUrl',
+          'socialHeading', 
+          'socialHeadingHighlight', 
+          'socialDescription', 
+          'socialButtonText', 
+          'socialMediaLink'
+        ],
+        sort: { sortBy: 'updatedAt', direction: 'desc' },
+        properties: {
+          mainDescription: {
+            type: 'textarea',
+            props: {
+              rows: 4
+            }
+          },
+          socialDescription: {
+            type: 'textarea',
+            props: {
+              rows: 4
+            }
+          }
+        },
+        actions: {
+          new: { isVisible: false }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/news') } },
+          properties: { key: 'backgroundImageUrl', bucket: 'newsBackgrounds' }
+        })
+      ]
+    },
+    {
+      resource: Platform,
+      options: {
+        parent: { name: 'Product Management', icon: 'Package' },
+        listProperties: ['platformName', 'platformKey', 'status', 'displayOrder'],
+        editProperties: ['platformName', 'description', 'features', 'images', 'platformKey', 'technicalSpecs', 'benefits', 'displayOrder', 'status'],
+        filterProperties: ['status'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: {
+              rows: 4
+            }
+          },
+          features: {
+            type: 'textarea',
+            props: {
+              rows: 6,
+              placeholder: 'Enter features as JSON array, e.g., ["Feature 1", "Feature 2"]'
+            }
+          },
+          images: {
+            type: 'textarea',
+            props: {
+              rows: 4,
+              placeholder: 'Enter image URLs as JSON array, e.g., ["/images/img1.jpg", "/images/img2.jpg"]'
+            }
+          },
+          technicalSpecs: {
+            type: 'textarea',
+            props: {
+              rows: 5,
+              placeholder: 'Enter technical specs as JSON array, e.g., ["Spec 1", "Spec 2"]'
+            }
+          },
+          benefits: {
+            type: 'textarea',
+            props: {
+              rows: 5,
+              placeholder: 'Enter benefits as JSON array, e.g., ["Benefit 1", "Benefit 2"]'
+            }
+          }
+        }
       }
     }
   ]
