@@ -5,7 +5,10 @@ const {
   Product,
   CompanyLogo,
   FormSubmission,
-  MenuItem
+  MenuItem,
+  NewsArticle,
+  NewsPageSettings,
+  Platform
 } = require('../models');
 
 async function createTables() {
@@ -229,6 +232,159 @@ async function seedInitialData() {
           itemKey: item.itemKey 
         },
         defaults: item
+      });
+    }
+
+    // Seed News Articles
+    const newsArticles = [
+      {
+        title: 'Facebook Partners with Carebridge for Healthcare Innovation',
+        summary: 'Carebridge announces revolutionary monitoring system',
+        content: 'Lorem ipsum dolor sit amet consectetur adipiscing elit Vel mauris turpis vel eget nec orci nec ipsum Elementum felis eu pellentesque velit vulputate. Blandit consequat facilisi sagittis ut quis Integer et faucibus elemen.',
+        imageUrl: '/images/news-img.svg',
+        author: 'John Carter',
+        authorPosition: 'Creative Director',
+        authorCompany: 'Facebook',
+        isFeatured: true,
+        companyLogoUrl: '/images/Facebook.png',
+        videoUrl: 'https://example.com/video',
+        displayOrder: 1,
+        status: 'published'
+      },
+      {
+        title: 'New Healthcare Device Launch',
+        summary: 'Carebridge announces revolutionary monitoring system',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum at lacinia ex, in mollis lectus.',
+        imageUrl: '/images/img-1.png',
+        author: 'Sarah Johnson',
+        isFeatured: false,
+        displayOrder: 2,
+        status: 'published'
+      },
+      {
+        title: 'Telemedicine Platform Updates',
+        summary: 'Latest updates to our comprehensive telemedicine solution',
+        content: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+        imageUrl: '/images/img-2.png',
+        author: 'Dr. Michael Chen',
+        authorPosition: 'Chief Medical Officer',
+        isFeatured: false,
+        displayOrder: 3,
+        status: 'published'
+      },
+      {
+        title: 'Remote Monitoring Success Stories',
+        summary: 'Real-world impact of our remote monitoring solutions',
+        content: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+        imageUrl: '/images/img-3.png',
+        author: 'Lisa Rodriguez',
+        authorPosition: 'Head of Clinical Affairs',
+        isFeatured: false,
+        displayOrder: 4,
+        status: 'published'
+      }
+    ];
+
+    for (const article of newsArticles) {
+      await NewsArticle.findOrCreate({
+        where: { title: article.title },
+        defaults: article
+      });
+    }
+
+    // Seed News Page Settings
+    const newsPageSettings = {
+      mainHeading: 'Latest',
+      mainHeadingHighlight: 'News & Updates',
+      mainDescription: 'Stay updated with the latest healthcare technology innovations, research breakthroughs, and company announcements.',
+      backgroundImageUrl: '/images/news-bg.jpg',
+      socialHeading: 'Follow us on',
+      socialHeadingHighlight: 'Linkedin',
+      socialDescription: 'Explore our collection of healthcare technology articles, research papers, and industry updates.',
+      socialButtonText: 'Follow Us',
+      socialMediaLink: 'https://www.linkedin.com/company/carebridge-health'
+    };
+
+    await NewsPageSettings.findOrCreate({
+      where: { id: 1 },
+      defaults: newsPageSettings
+    });
+
+    // Seed Platform Data
+    const platforms = [
+      {
+        platformName: 'CareBridge Telemedicine Platform',
+        description: 'Comprehensive telemedicine solution for healthcare providers and patients.',
+        features: [
+          'Real-time video consultations',
+          'Patient data management',
+          'Electronic health records integration',
+          'Prescription management',
+          'Appointment scheduling',
+          'Multi-device compatibility'
+        ],
+        images: [
+          '/images/platform-telemedicine-1.jpg',
+          '/images/platform-telemedicine-2.jpg',
+          '/images/platform-telemedicine-3.jpg'
+        ],
+        platformKey: 'telemedicine',
+        technicalSpecs: [
+          'Cloud-based infrastructure',
+          'HIPAA compliant security',
+          'API integration support',
+          'Mobile responsive design',
+          'Real-time data synchronization'
+        ],
+        benefits: [
+          'Reduce patient waiting times',
+          'Increase healthcare accessibility',
+          'Lower operational costs',
+          'Improve patient satisfaction',
+          'Enhanced care coordination'
+        ],
+        displayOrder: 1,
+        status: 'active'
+      },
+      {
+        platformName: 'Remote Monitoring System',
+        description: 'Advanced remote patient monitoring for chronic disease management.',
+        features: [
+          'Continuous vital sign monitoring',
+          'Alert system for healthcare providers',
+          'Patient self-reporting tools',
+          'Trend analysis and reporting',
+          'Family caregiver access',
+          'Emergency response integration'
+        ],
+        images: [
+          '/images/platform-monitoring-1.jpg',
+          '/images/platform-monitoring-2.jpg'
+        ],
+        platformKey: 'remote-monitoring',
+        technicalSpecs: [
+          'IoT device connectivity',
+          'Real-time data processing',
+          'AI-powered analytics',
+          'Secure data transmission',
+          '24/7 system availability'
+        ],
+        benefits: [
+          'Early disease detection',
+          'Prevent hospital readmissions',
+          'Personalized care plans',
+          'Improved patient outcomes',
+          'Cost-effective healthcare delivery'
+        ],
+        displayOrder: 2,
+        status: 'active'
+      }
+    ];
+
+    for (const platform of platforms) {
+      await Platform.findOrCreate({
+        where: { platformKey: platform.platformKey },
+        defaults: platform
       });
     }
 

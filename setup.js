@@ -25,6 +25,8 @@ const uploadDirs = [
   'uploads/team',
   'uploads/news',
   'uploads/categories',
+  'uploads/testimonials',
+  'uploads/social',
   'assets'
 ];
 

@@ -7,6 +7,9 @@ const Product = require('./Product');
 const CompanyLogo = require('./CompanyLogo');
 const FormSubmission = require('./FormSubmission');
 const MenuItem = require('./MenuItem');
+const NewsArticle = require('./NewsArticle');
+const NewsPageSettings = require('./NewsPageSettings');
+const Platform = require('./Platform');
 
 // No relationships needed for the simplified schema
 
@@ -18,5 +21,8 @@ module.exports = {
   Product,
   CompanyLogo,
   FormSubmission,
-  MenuItem
+  MenuItem,
+  NewsArticle,
+  NewsPageSettings,
+  Platform
 };
