@@ -24,6 +24,7 @@ const uploadDirs = [
   'uploads/platforms', 
   'uploads/team',
   'uploads/news',
+  'uploads/logos',
   'uploads/categories',
   'uploads/testimonials',
   'uploads/social',
