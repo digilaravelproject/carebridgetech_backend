@@ -126,6 +126,10 @@ async function startServer() {
   }
 }
 
+app.get('/api/', (req, res) => {
+  res.json({ message: "API root working" });
+});
+
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
   console.log('🛑 Graceful shutdown initiated...');
