@@ -70,6 +70,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+app.get('/api/', (req, res) => {
+  res.json({ message: "API root working" });
+});
+
 // API Routes
 app.use('/api/content', require('./src/routes/content'));
 app.use('/api/team', require('./src/routes/team'));
@@ -125,10 +129,6 @@ async function startServer() {
     process.exit(1);
   }
 }
-
-app.get('/api/', (req, res) => {
-  res.json({ message: "API root working" });
-});
 
 // Handle graceful shutdown
 process.on('SIGINT', async () => {
