@@ -23,8 +23,8 @@ const adminJs = new AdminJS({
   rootPath: '/admin',
   branding: {
     companyName: 'CareBridge Technologies',
-    logo: '/assets/images/logo.svg',
-    favicon: '/assets/favicon/favicon.ico',
+    logo: '/images/logo.svg',
+    favicon: '/favicon/favicon.ico',
     withMadeWithLove: false,
     theme: {
       colors: {
