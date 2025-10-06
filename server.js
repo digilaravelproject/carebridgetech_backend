@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 // Import database and models
@@ -11,6 +12,29 @@ const AdminJSExpress = require('@adminjs/express');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+
+// Ensure required directories exist
+function ensureDirectories() {
+  const directories = [
+    'uploads/products',
+    'uploads/platforms',
+    'uploads/team',
+    'uploads/news',
+    'uploads/logos',
+    'uploads/categories',
+    'uploads/testimonials',
+    'uploads/social',
+    'assets'
+  ];
+
+  directories.forEach(dir => {
+    const dirPath = path.join(__dirname, dir);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+      console.log(`📁 Created directory: ${dir}`);
+    }
+  });
+}
 
 // Test database connection
 async function testDatabaseConnection() {
@@ -84,6 +108,9 @@ app.use((error, req, res, next) => {
 // Start server
 async function startServer() {
   try {
+    // Ensure required directories exist
+    ensureDirectories();
+    
     // Test database connection
     await testDatabaseConnection();
     
