@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareBridge Image Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #005783 0%, #009EE0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #005783;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #009EE0;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #e8f4fd;
+            border-color: #005783;
+        }
+        
+        .upload-area.dragover {
+            background: #e8f4fd;
+            border-color: #005783;
+            transform: scale(1.02);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .btn {
+            background: #007BA7;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #005783;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .preview {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .preview img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result {
+            background: #e8f4fd;
+            border-left: 4px solid #007BA7;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color: #005783;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copy-btn {
+            background: #007BA7;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #005783;
+        }
+        
+        .error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        
+        .file-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007BA7;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 CareBridge Image Upload</h1>
+        <p class="subtitle">Upload images for Content Items</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📸</div>
+            <h3>Drop image here or click to browse</h3>
+            <p style="color: #999; margin-top: 10px;">Supports: JPG, PNG, GIF, WebP, SVG (Max 5MB)</p>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Uploading...</p>
+        </div>
+        
+        <div class="preview" id="preview">
+            <img id="previewImage" src="" alt="Preview">
+            <div class="file-info" id="fileInfo"></div>
+            <div class="result">
+                <div class="result-label">Image URL (Copy this to AdminJS):</div>
+                <div class="result-value">
+                    <span id="imageUrl"></span>
+                    <button class="copy-btn" onclick="copyToClipboard()">Copy</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const preview = document.getElementById('preview');
+        const previewImage = document.getElementById('previewImage');
+        const imageUrl = document.getElementById('imageUrl');
+        const fileInfo = document.getElementById('fileInfo');
+        const message = document.getElementById('message');
+        const loading = document.getElementById('loading');
+
+        // Click to browse
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showMessage('Please select an image file', 'error');
+                return;
+            }
+
+            // Validate file size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('File size must be less than 5MB', 'error');
+                return;
+            }
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+
+            // Upload file
+            uploadFile(file);
+        }
+
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            loading.style.display = 'block';
+            message.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/upload/content-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                loading.style.display = 'none';
+
+                if (response.ok && data.success) {
+                    imageUrl.textContent = data.filePath;
+                    fileInfo.innerHTML = `
+                        <strong>Filename:</strong> ${data.fileName}<br>
+                        <strong>Size:</strong> ${formatBytes(data.size)}
+                    `;
+                    showMessage('Upload successful! Copy the URL above and paste it into the "Image Url" field in AdminJS.', 'success');
+                } else {
+                    throw new Error(data.message || 'Upload failed');
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                showMessage('Upload failed: ' + error.message, 'error');
+                console.error('Upload error:', error);
+            }
+        }
+
+        function copyToClipboard() {
+            const url = imageUrl.textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                showMessage('URL copied to clipboard!', 'success');
+            }).catch(err => {
+                showMessage('Failed to copy URL', 'error');
+            });
+        }
+
+        function showMessage(text, type) {
+            message.innerHTML = `<div class="${type}">${text}</div>`;
+            setTimeout(() => {
+                if (type === 'success') {
+                    message.innerHTML = '';
+                }
+            }, 5000);
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>

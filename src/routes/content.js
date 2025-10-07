@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/:pageKey', async (req, res) => {
   try {
     const { pageKey } = req.params;
+    const uploadUrl = process.env.UPLOAD_URL || 'http://localhost:3000';
     
     const contentItems = await ContentItem.findAll({
       where: { 
@@ -21,7 +22,13 @@ router.get('/:pageKey', async (req, res) => {
       if (!groupedContent[item.sectionKey]) {
         groupedContent[item.sectionKey] = {};
       }
-      groupedContent[item.sectionKey][item.contentKey] = item.contentValue;
+      
+      // For image content types, return full URL with base domain
+      if (item.contentType === 'image') {
+        groupedContent[item.sectionKey][item.contentKey] = `${uploadUrl}${item.contentValue}`;
+      } else {
+        groupedContent[item.sectionKey][item.contentKey] = item.contentValue;
+      }
     });
 
     res.json({
@@ -41,6 +48,7 @@ router.get('/:pageKey', async (req, res) => {
 router.get('/:pageKey/:sectionKey', async (req, res) => {
   try {
     const { pageKey, sectionKey } = req.params;
+    const uploadUrl = process.env.UPLOAD_URL || 'http://localhost:3000';
     
     const contentItems = await ContentItem.findAll({
       where: { 
@@ -53,7 +61,12 @@ router.get('/:pageKey/:sectionKey', async (req, res) => {
 
     const sectionContent = {};
     contentItems.forEach(item => {
-      sectionContent[item.contentKey] = item.contentValue;
+      // For image content types, return full URL with base domain
+      if (item.contentType === 'image') {
+        sectionContent[item.contentKey] = `${uploadUrl}${item.contentValue}`;
+      } else {
+        sectionContent[item.contentKey] = item.contentValue;
+      }
     });
 
     res.json({

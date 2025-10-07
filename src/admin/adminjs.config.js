@@ -2,6 +2,7 @@ const AdminJS = require('adminjs');
 const AdminJSSequelize = require('@adminjs/sequelize');
 const uploadFeature = require('@adminjs/upload');
 const path = require('path');
+const Dashboard = require('./dashboard');
 
 // Register Sequelize adapter
 AdminJS.registerAdapter(AdminJSSequelize);
@@ -22,7 +23,8 @@ const {
 const adminJs = new AdminJS({
   rootPath: '/admin',
   branding: {
-    companyName: 'CareBridge Technologies',
+    companyName: 'CareBridge Admin',
+    softwareBrothers: false,
     logo: '/images/logo.svg',
     favicon: '/favicon/favicon.ico',
     withMadeWithLove: false,
@@ -50,7 +52,7 @@ const adminJs = new AdminJS({
       options: {
         parent: { name: 'Content Management', icon: 'FileText' },
         listProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentType', 'status'],
-        editProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentValue', 'contentType', 'displayOrder', 'status'],
+        editProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentValue', 'imageUrl', 'contentType', 'displayOrder', 'status'],
         filterProperties: ['pageKey', 'sectionKey', 'contentType', 'status'],
         sort: { sortBy: 'pageKey', direction: 'asc' },
         properties: {
@@ -58,7 +60,24 @@ const adminJs = new AdminJS({
             type: 'textarea',
             props: {
               rows: 4
-            }
+            },
+            description: 'Use this field for text/json content.'
+          },
+          // imageUrl: {
+          //   type: 'string',
+          //   props: {
+          //     placeholder: 'Paste image URL here after uploading via the Upload Tool'
+          //   },
+          //   description: '📸 UPLOAD TOOL: http://localhost:3000/upload-test.html (open in new tab) | 📖 INSTRUCTIONS: http://localhost:3000/admin-instructions.html | Upload image → Copy URL → Paste here'
+          // },
+          pageKey: {
+            description: 'Example: home, about, contact, news, product-details'
+          },
+          sectionKey: {
+            description: 'Example: hero, features, testimonials, team'
+          },
+          contentType: {
+            description: 'Select "image" when using imageUrl field, "text" for contentValue, "json" for structured data'
           }
         }
       }

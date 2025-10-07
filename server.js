@@ -24,6 +24,7 @@ function ensureDirectories() {
     'uploads/categories',
     'uploads/testimonials',
     'uploads/social',
+    'uploads/content',
     'assets'
   ];
 
@@ -48,27 +49,34 @@ async function testDatabaseConnection() {
 }
 
 // Basic CORS middleware first
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:4200',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
+app.use(cors('*'));
 
 // AdminJS routes with simple authentication
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
   authenticate: authConfig.authenticate,
   cookiePassword: authConfig.cookiePassword
 });
+
+// Add upload tool redirect route BEFORE AdminJS routes  
+app.get('/admin/upload-tool', (req, res) => {
+  res.redirect('/upload-test.html');
+});
+
+// Add a simple info page for upload instructions
+app.get('/admin/help', (req, res) => {
+  res.redirect('/admin-instructions.html');
+});
+
 app.use(adminJs.options.rootPath, adminRouter);
 
 // Body parser middleware AFTER AdminJS
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Serve static files (uploads and assets)
+// Serve static files (uploads, assets, and public)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/', (req, res) => {
   res.json({ message: "API root working" });
@@ -82,6 +90,12 @@ app.use('/api/logos', require('./src/routes/logos'));
 app.use('/api/forms', require('./src/routes/forms'));
 app.use('/api/navigation', require('./src/routes/navigation'));
 app.use('/api/news', require('./src/routes/news'));
+app.use('/api/upload', require('./src/routes/upload'));
+
+//here serve aupload html
+app.get('/upload', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'upload-test.html'));
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
