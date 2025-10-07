@@ -27,6 +27,11 @@ const ContentItem = sequelize.define('ContentItem', {
     allowNull: true,
     comment: 'The actual content value'
   },
+  imageUrl: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+    comment: 'Image URL for content items with contentType: image'
+  },
   contentType: {
     type: DataTypes.ENUM('text', 'image', 'json'),
     defaultValue: 'text'

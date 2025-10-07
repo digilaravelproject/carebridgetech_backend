@@ -141,13 +141,52 @@ The simplified application uses the following main tables:
 - `menu_items` - Dynamic navigation menu items
 - `form_submissions` - Contact and about form submissions
 
-## File Upload Structure
+## Image Upload System
+
+### Upload Tool Interface
+
+For uploading images to Content Items, use the dedicated upload tool:
+
+**URL**: `http://localhost:5000/upload-test.html`
+
+**Features**:
+- 🎨 Beautiful drag-and-drop interface
+- 📸 Instant image preview
+- 📋 One-click URL copying
+- ✅ Client & server-side validation
+- 🚀 Fast uploads with progress indication
+
+**How to Use**:
+1. Open `http://localhost:5000/upload-test.html`
+2. Drag & drop your image or click to browse
+3. Click "Copy" to copy the generated URL
+4. Paste the URL into the `Image Url` field in AdminJS
+
+**API Endpoint**:
+```bash
+POST /api/upload/content-image
+Content-Type: multipart/form-data
+
+# Response
+{
+  "success": true,
+  "filePath": "/uploads/content/1696789123456-image.png",
+  "fileName": "1696789123456-image.png",
+  "size": 123456
+}
+```
+
+📖 **Complete Guide**: See [IMAGE_UPLOAD_GUIDE.md](./IMAGE_UPLOAD_GUIDE.md) for detailed documentation
+
+### File Upload Structure
 
 ```
 uploads/
+├── content/      # Content item images (via upload tool)
 ├── products/     # Product images
 ├── team/         # Team member photos
-└── logos/        # Company logos
+├── logos/        # Company logos
+└── news/         # News article images
 ```
 
 ## Development
