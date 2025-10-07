@@ -17,7 +17,21 @@ const {
   MenuItem,
   NewsArticle,
   NewsPageSettings,
-  Platform
+  Platform,
+  // Home Page models
+  HomeHero,
+  HomeFeatures,
+  HomeChallenges,
+  HomeChallengeItem,
+  HomeEcosystem,
+  HomeEcosystemItem,
+  HomeTargetAudience,
+  HomeTargetAudienceTab,
+  HomeCompanyLogos,
+  HomeCompanyLogoItem,
+  HomeTestimonials,
+  HomeTestimonialItem,
+  HomeCTA
 } = require('../models');
 
 const adminJs = new AdminJS({
@@ -306,6 +320,217 @@ const adminJs = new AdminJS({
               rows: 5,
               placeholder: 'Enter benefits as JSON array, e.g., ["Benefit 1", "Benefit 2"]'
             }
+          }
+        }
+      }
+    },
+    // Home Page Management
+    {
+      resource: HomeHero,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['mainTitle', 'subTitle', 'mainText', 'isActive'],
+        editProperties: ['mainTitle', 'subTitle', 'mainText', 'description', 'buttonText', 'image', 'isActive'],
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          image: {
+            description: 'Enter image path (e.g., /images/home-img.png) or full URL from upload tool'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeFeatures,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionSubtitle', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionSubtitle', 'feature1Title', 'feature2Title', 'feature3Title', 'feature4Title', 'isActive']
+      }
+    },
+    {
+      resource: HomeChallenges,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionHighlight', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionHighlight', 'description', 'isActive'],
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          }
+        }
+      }
+    },
+    {
+      resource: HomeChallengeItem,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['number', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['challengeId', 'number', 'title', 'description', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          challengeId: {
+            description: 'Must match the ID of the Challenge section (usually 1)'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeEcosystem,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionHighlight', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionHighlight', 'description', 'isActive'],
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          }
+        }
+      }
+    },
+    {
+      resource: HomeEcosystemItem,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['title', 'type', 'link', 'displayOrder', 'isActive'],
+        editProperties: ['ecosystemId', 'title', 'description', 'image', 'link', 'type', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 2 }
+          },
+          ecosystemId: {
+            description: 'Must match the ID of the Ecosystem section (usually 1)'
+          },
+          type: {
+            availableValues: [
+              { value: 'large', label: 'Large' },
+              { value: 'small', label: 'Small' }
+            ]
+          },
+          image: {
+            description: 'Enter image path (e.g., /images/desktop-mockup.svg) or full URL'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeTargetAudience,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionHighlight', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionHighlight', 'description', 'isActive'],
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          }
+        }
+      }
+    },
+    {
+      resource: HomeTargetAudienceTab,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['tabId', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['audienceId', 'tabId', 'title', 'image', 'description', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 2 },
+            description: 'This field is mapped to "desc" in API response'
+          },
+          audienceId: {
+            description: 'Must match the ID of the Target Audience section (usually 1)'
+          },
+          tabId: {
+            description: 'Unique identifier for the tab (e.g., clinics, hospitals, phc)'
+          },
+          image: {
+            description: 'Enter image path (e.g., /images/benyamin.png) - This field is mapped to "img" in API'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeCompanyLogos,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionSubtitle', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionSubtitle', 'isActive']
+      }
+    },
+    {
+      resource: HomeCompanyLogoItem,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['companyName', 'displayOrder', 'isActive'],
+        editProperties: ['logoSectionId', 'companyName', 'logoImage', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          logoSectionId: {
+            description: 'Must match the ID of the Company Logos section (usually 1)'
+          },
+          logoImage: {
+            description: 'Enter image path (e.g., /images/Google.png) or full URL from upload tool'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeTestimonials,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['sectionTitle', 'sectionHighlight', 'isActive'],
+        editProperties: ['sectionTitle', 'sectionHighlight', 'description', 'isActive'],
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          }
+        }
+      }
+    },
+    {
+      resource: HomeTestimonialItem,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['name', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['testimonialSectionId', 'profileImage', 'title', 'description', 'name', 'position', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          testimonialSectionId: {
+            description: 'Must match the ID of the Testimonials section (usually 1)'
+          },
+          profileImage: {
+            description: 'Enter image path (e.g., /images/profile.svg) or full URL from upload tool'
+          }
+        }
+      }
+    },
+    {
+      resource: HomeCTA,
+      options: {
+        parent: { name: 'Home Page', icon: 'Home' },
+        listProperties: ['title', 'buttonText', 'isActive'],
+        editProperties: ['title', 'buttonText', 'buttonLink', 'image', 'isActive'],
+        properties: {
+          image: {
+            description: 'Enter image path (e.g., /images/home-image.svg) or full URL from upload tool'
           }
         }
       }
