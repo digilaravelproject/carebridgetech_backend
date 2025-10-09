@@ -13,7 +13,11 @@ const {
   HomeCompanyLogoItem,
   HomeTestimonials,
   HomeTestimonialItem,
-  HomeCTA
+  HomeCTA,
+  AboutPageSettings,
+  AboutMissionFeature,
+  AboutStatistic,
+  TeamMember
 } = require('../models');
 
 // GET /api/pages/home - Get complete home page content
@@ -192,6 +196,119 @@ router.get('/home', async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Failed to fetch home page content',
+      error: error.message
+    });
+  }
+});
+
+// GET /api/pages/about - Get complete about page content
+router.get('/about', async (req, res) => {
+  try {
+    const uploadUrl = process.env.UPLOAD_URL || 'http://localhost:3000';
+
+    // Fetch all sections in parallel
+    const [
+      settings,
+      missionFeatures,
+      statistics,
+      teamMembers
+    ] = await Promise.all([
+      AboutPageSettings.findOne({ where: { isActive: true } }),
+      AboutMissionFeature.findAll({ 
+        where: { isActive: true },
+        order: [['displayOrder', 'ASC']]
+      }),
+      AboutStatistic.findAll({ 
+        where: { isActive: true },
+        order: [['displayOrder', 'ASC']]
+      }),
+      TeamMember.findAll({ 
+        where: { status: 'active' },
+        order: [['displayOrder', 'ASC']]
+      })
+    ]);
+
+    // Helper function to add upload URL to image paths
+    const addUploadUrl = (path) => {
+      if (!path) return path;
+      return path.startsWith('http') ? path : `${uploadUrl}${path}`;
+    };
+
+    // Build response
+    const response = {
+      success: true,
+      data: {
+        header: settings ? {
+          title: settings.headerTitle,
+          subtitle: settings.headerSubtitle
+        } : null,
+        
+        company: settings ? {
+          description: settings.companyDescription,
+          image: addUploadUrl(settings.companyImage)
+        } : null,
+        
+        mission: settings ? {
+          title: settings.missionTitle,
+          highlight: settings.missionHighlight,
+          description: settings.missionDescription,
+          image: addUploadUrl(settings.missionImage),
+          features: missionFeatures.map(feature => ({
+            id: feature.id,
+            title: feature.title,
+            description: feature.description,
+            icon: addUploadUrl(feature.icon)
+          }))
+        } : null,
+        
+        statistics: settings ? {
+          title: settings.statisticsTitle,
+          highlight: settings.statisticsHighlight,
+          description: settings.statisticsDescription,
+          items: statistics.map(stat => ({
+            id: stat.id,
+            number: stat.number,
+            symbol: stat.symbol,
+            title: stat.title,
+            description: stat.description
+          }))
+        } : null,
+        
+        team: settings ? {
+          title: settings.teamTitle,
+          highlight: settings.teamHighlight,
+          description: settings.teamDescription,
+          members: teamMembers.map(member => ({
+            id: member.id,
+            name: member.name,
+            position: member.position,
+            bio: member.bio,
+            profileImage: addUploadUrl(member.profileImage),
+            socialLinks: {
+              facebook: member.socialFacebook || '',
+              twitter: member.socialTwitter || '',
+              instagram: member.socialInstagram || '',
+              linkedin: member.socialLinkedin || ''
+            }
+          }))
+        } : null,
+        
+        contact: settings ? {
+          title: settings.contactTitle,
+          highlight: settings.contactHighlight,
+          email: settings.contactEmail,
+          phone: settings.contactPhone,
+          address: settings.contactAddress
+        } : null
+      }
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error('Error fetching about page content:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch about page content',
       error: error.message
     });
   }

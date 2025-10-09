@@ -21,6 +21,11 @@ const { HomeCompanyLogos, HomeCompanyLogoItem } = require('./HomeCompanyLogos');
 const { HomeTestimonials, HomeTestimonialItem } = require('./HomeTestimonials');
 const HomeCTA = require('./HomeCTA');
 
+// Import About Page models
+const AboutPageSettings = require('./AboutPageSettings');
+const AboutMissionFeature = require('./AboutMissionFeature');
+const AboutStatistic = require('./AboutStatistic');
+
 // No relationships needed for the simplified schema
 
 // Export all models and sequelize instance
@@ -48,5 +53,9 @@ module.exports = {
   HomeCompanyLogoItem,
   HomeTestimonials,
   HomeTestimonialItem,
-  HomeCTA
+  HomeCTA,
+  // About Page models
+  AboutPageSettings,
+  AboutMissionFeature,
+  AboutStatistic
 };
