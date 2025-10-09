@@ -31,7 +31,11 @@ const {
   HomeCompanyLogoItem,
   HomeTestimonials,
   HomeTestimonialItem,
-  HomeCTA
+  HomeCTA,
+  // About Page models
+  AboutPageSettings,
+  AboutMissionFeature,
+  AboutStatistic
 } = require('../models');
 
 const adminJs = new AdminJS({
@@ -99,13 +103,17 @@ const adminJs = new AdminJS({
     {
       resource: TeamMember,
       options: {
-        parent: { name: 'Team Management', icon: 'Users' },
+        parent: { name: 'About Page', icon: 'Info' },
         listProperties: ['name', 'position', 'status', 'displayOrder'],
         editProperties: ['name', 'position', 'bio', 'profileImage', 'socialFacebook', 'socialTwitter', 'socialInstagram', 'socialLinkedin', 'displayOrder', 'status'],
         sort: { sortBy: 'displayOrder', direction: 'asc' },
         properties: {
           bio: {
-            type: 'textarea'
+            type: 'textarea',
+            props: { rows: 4 }
+          },
+          profileImage: {
+            description: 'Enter image path (e.g., /images/profile.svg) or full URL from upload tool'
           }
         }
       },
@@ -531,6 +539,91 @@ const adminJs = new AdminJS({
         properties: {
           image: {
             description: 'Enter image path (e.g., /images/home-image.svg) or full URL from upload tool'
+          }
+        }
+      }
+    },
+    // About Page Management
+    {
+      resource: AboutPageSettings,
+      options: {
+        parent: { name: 'About Page', icon: 'Info' },
+        listProperties: ['headerTitle', 'headerSubtitle', 'isActive'],
+        editProperties: [
+          'headerTitle', 'headerSubtitle',
+          'companyDescription', 'companyImage',
+          'missionTitle', 'missionHighlight', 'missionDescription', 'missionImage',
+          'statisticsTitle', 'statisticsHighlight', 'statisticsDescription',
+          'teamTitle', 'teamHighlight', 'teamDescription',
+          'contactTitle', 'contactHighlight', 'contactEmail', 'contactPhone', 'contactAddress',
+          'isActive'
+        ],
+        properties: {
+          companyDescription: {
+            type: 'textarea',
+            props: { rows: 4 }
+          },
+          companyImage: {
+            description: 'Enter image path (e.g., /images/about-company.png) or full URL'
+          },
+          missionDescription: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          missionImage: {
+            description: 'Enter image path (e.g., /images/world-map.svg) or full URL'
+          },
+          statisticsDescription: {
+            type: 'textarea',
+            props: { rows: 2 }
+          },
+          teamDescription: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          contactAddress: {
+            type: 'textarea',
+            props: { rows: 2 },
+            description: 'Use \\n for line breaks'
+          }
+        }
+      }
+    },
+    {
+      resource: AboutMissionFeature,
+      options: {
+        parent: { name: 'About Page', icon: 'Info' },
+        listProperties: ['title', 'displayOrder', 'isActive'],
+        editProperties: ['title', 'description', 'icon', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          icon: {
+            description: 'Enter icon path (e.g., /images/early-detection-icon.svg) or full URL'
+          }
+        }
+      }
+    },
+    {
+      resource: AboutStatistic,
+      options: {
+        parent: { name: 'About Page', icon: 'Info' },
+        listProperties: ['title', 'number', 'symbol', 'displayOrder', 'isActive'],
+        editProperties: ['number', 'symbol', 'title', 'description', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 2 }
+          },
+          number: {
+            description: 'The numeric value (e.g., 99, 32, 240)'
+          },
+          symbol: {
+            description: 'Symbol to display after number (e.g., %, M, +)'
           }
         }
       }
