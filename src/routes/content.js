@@ -25,7 +25,7 @@ router.get('/:pageKey', async (req, res) => {
       
       // For image content types, return full URL with base domain
       if (item.contentType === 'image') {
-        groupedContent[item.sectionKey][item.contentKey] = `${uploadUrl}${item.contentValue}`;
+        groupedContent[item.sectionKey][item.contentKey] = `${item.contentValue}`;
       } else {
         groupedContent[item.sectionKey][item.contentKey] = item.contentValue;
       }
