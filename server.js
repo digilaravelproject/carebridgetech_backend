@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const morgan = require('morgan');
 require('dotenv').config();
 
 // Import database and models
@@ -55,6 +56,9 @@ async function testDatabaseConnection() {
     process.exit(1);
   }
 }
+
+// Morgan logging middleware
+app.use(morgan('dev'));
 
 // Basic CORS middleware first
 app.use(cors('*'));
