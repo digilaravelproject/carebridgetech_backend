@@ -71,3 +71,15 @@ import Component34 from '../node_modules/@adminjs/upload/src/features/upload-fil
 AdminJS.UserComponents.Component34 = Component34
 import Component35 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
 AdminJS.UserComponents.Component35 = Component35
+import Component36 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component36 = Component36
+import Component37 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component37 = Component37
+import Component38 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component38 = Component38
+import Component39 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component39 = Component39
+import Component40 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component40 = Component40
+import Component41 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component41 = Component41
