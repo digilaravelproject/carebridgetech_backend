@@ -135,51 +135,51 @@ const adminJs = new AdminJS({
         })
       ]
     },
-    // {
-    //   resource: Product,
-    //   options: {
-    //     parent: { name: 'Product Management', icon: 'Package' },
-    //     listProperties: ['productName', 'categoryKey', 'status', 'displayOrder'],
-    //     editProperties: ['categoryKey', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
-    //     filterProperties: ['categoryKey', 'status'],
-    //     sort: { sortBy: 'displayOrder', direction: 'asc' },
-    //     properties: {
-    //       specifications: {
-    //         type: 'textarea',
-    //         props: {
-    //           rows: 6
-    //         }
-    //       },
-    //       galleryImages: {
-    //         type: 'textarea',
-    //         props: {
-    //           rows: 4
-    //         }
-    //       }
-    //     }
-    //   },
-    //   features: [
-    //     uploadFeature({
-    //       provider: { local: { bucket: path.join(__dirname, '../../uploads/products') } },
-    //       properties: { key: 'mainImage', bucket: 'productImages' }
-    //     })
-    //   ]
-    // },
-    // {
-    //   resource: CompanyLogo,
-    //   options: {
-    //     parent: { name: 'Brand Management', icon: 'Image' },
-    //     listProperties: ['companyName', 'status', 'displayOrder'],
-    //     editProperties: ['companyName', 'logoImage', 'displayOrder', 'status'],
-    //     sort: { sortBy: 'displayOrder', direction: 'asc' }
-    //   },
-    //   features: [
-    //     uploadFeature({
-    //       provider: { local: { bucket: path.join(__dirname, '../../uploads/logos') } },
-    //       properties: { key: 'logoImage', bucket: 'companyLogos' }
-    //     })
-    //   ]
-    // },
+    {
+      resource: Product,
+      options: {
+        parent: { name: 'Product Management', icon: 'Package' },
+        listProperties: ['productName', 'categoryKey', 'status', 'displayOrder'],
+        editProperties: ['categoryKey', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
+        filterProperties: ['categoryKey', 'status'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          specifications: {
+            type: 'textarea',
+            props: {
+              rows: 6
+            }
+          },
+          galleryImages: {
+            type: 'textarea',
+            props: {
+              rows: 4
+            }
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/products') } },
+          properties: { key: 'mainImage', bucket: 'productImages' }
+        })
+      ]
+    },
+    {
+      resource: CompanyLogo,
+      options: {
+        parent: { name: 'Brand Management', icon: 'Image' },
+        listProperties: ['companyName', 'status', 'displayOrder'],
+        editProperties: ['companyName', 'logoImage', 'displayOrder', 'status'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/logos') } },
+          properties: { key: 'logoImage', bucket: 'companyLogos' }
+        })
+      ]
+    },
     {
       resource: FormSubmission,
       options: {
@@ -297,57 +297,57 @@ const adminJs = new AdminJS({
         })
       ]
     },
-    {
-      resource: Platform,
-      options: {
-        parent: { name: 'Product Management', icon: 'Package' },
-        listProperties: ['platformName', 'platformKey', 'status', 'displayOrder'],
-        editProperties: ['platformName', 'description', 'features', 'images', 'platformKey', 'technicalSpecs', 'benefits', 'displayOrder', 'status'],
-        filterProperties: ['status'],
-        sort: { sortBy: 'displayOrder', direction: 'asc' },
-        properties: {
-          description: {
-            type: 'textarea',
-            props: {
-              rows: 4
-            }
-          },
-          features: {
-            type: 'textarea',
-            props: {
-              rows: 6,
-              placeholder: 'Enter features as JSON array, e.g., ["Feature 1", "Feature 2"]'
-            }
-          },
-          images: {
-            type: 'textarea',
-            props: {
-              rows: 4,
-              placeholder: 'Enter image URLs as JSON array, e.g., ["/images/img1.jpg", "/images/img2.jpg"]'
-            }
-          },
-          technicalSpecs: {
-            type: 'textarea',
-            props: {
-              rows: 5,
-              placeholder: 'Enter technical specs as JSON array, e.g., ["Spec 1", "Spec 2"]'
-            }
-          },
-          benefits: {
-            type: 'textarea',
-            props: {
-              rows: 5,
-              placeholder: 'Enter benefits as JSON array, e.g., ["Benefit 1", "Benefit 2"]'
-            }
-          }
-        }
-      }
-    },
-    // Product Details Page Management
+    // {
+    //   resource: Platform,
+    //   options: {
+    //     parent: { name: 'Product Management', icon: 'Package' },
+    //     listProperties: ['platformName', 'platformKey', 'status', 'displayOrder'],
+    //     editProperties: ['platformName', 'description', 'features', 'images', 'platformKey', 'technicalSpecs', 'benefits', 'displayOrder', 'status'],
+    //     filterProperties: ['status'],
+    //     sort: { sortBy: 'displayOrder', direction: 'asc' },
+    //     properties: {
+    //       description: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 4
+    //         }
+    //       },
+    //       features: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 6,
+    //           placeholder: 'Enter features as JSON array, e.g., ["Feature 1", "Feature 2"]'
+    //         }
+    //       },
+    //       images: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 4,
+    //           placeholder: 'Enter image URLs as JSON array, e.g., ["/images/img1.jpg", "/images/img2.jpg"]'
+    //         }
+    //       },
+    //       technicalSpecs: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 5,
+    //           placeholder: 'Enter technical specs as JSON array, e.g., ["Spec 1", "Spec 2"]'
+    //         }
+    //       },
+    //       benefits: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 5,
+    //           placeholder: 'Enter benefits as JSON array, e.g., ["Benefit 1", "Benefit 2"]'
+    //         }
+    //       }
+    //     }
+    //   }
+    // },
+    // Platforms Management
     {
       resource: ProductPlatform,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['platformId', 'name', 'displayOrder', 'isActive'],
         editProperties: ['platformId', 'name', 'logoUrl', 'description', 'displayOrder', 'isActive'],
         filterProperties: ['isActive'],
@@ -375,7 +375,7 @@ const adminJs = new AdminJS({
     {
       resource: PlatformFeature,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['platformId', 'title'],
         editProperties: ['platformId', 'iconUrl', 'title', 'description'],
         filterProperties: ['platformId'],
@@ -402,7 +402,7 @@ const adminJs = new AdminJS({
     {
       resource: PlatformImage,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['platformId', 'altText', 'displayOrder'],
         editProperties: ['platformId', 'imageUrl', 'altText', 'displayOrder'],
         filterProperties: ['platformId'],
@@ -426,7 +426,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductContentSection,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'isActive'],
         editProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'imageUrl', 'description', 'isActive'],
         filterProperties: ['isActive'],
@@ -453,7 +453,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductAchievement,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['title', 'displayOrder', 'isActive'],
         editProperties: ['iconUrl', 'title', 'description', 'displayOrder', 'isActive'],
         filterProperties: ['isActive'],
@@ -478,7 +478,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductTargetAudience,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['title', 'displayOrder', 'isActive'],
         editProperties: ['imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
         filterProperties: ['isActive'],
@@ -503,7 +503,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductDeploymentOption,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['title', 'displayOrder', 'isActive'],
         editProperties: ['iconUrl', 'title', 'displayOrder', 'isActive'],
         filterProperties: ['isActive'],
@@ -524,7 +524,7 @@ const adminJs = new AdminJS({
     {
       resource: DeploymentPlatformMapping,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['deploymentOptionId', 'platformId'],
         editProperties: ['deploymentOptionId', 'platformId'],
         filterProperties: ['platformId'],
@@ -541,7 +541,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductSolution,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['platformId', 'title', 'displayOrder', 'isActive'],
         editProperties: ['platformId', 'imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
         filterProperties: ['platformId', 'isActive'],
@@ -569,7 +569,7 @@ const adminJs = new AdminJS({
     {
       resource: ProductCTASection,
       options: {
-        parent: { name: 'Product Details Page', icon: 'Layers' },
+        parent: { name: 'Platforms', icon: 'Layers' },
         listProperties: ['platformId', 'title'],
         editProperties: ['platformId', 'title', 'description', 'buttonText', 'buttonLink'],
         filterProperties: ['platformId'],

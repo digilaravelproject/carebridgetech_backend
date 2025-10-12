@@ -3,34 +3,26 @@ const { Product } = require('../models');
 const router = express.Router();
 
 // GET /api/products/:category - Get products by category
-router.get('/:category', async (req, res) => {
+router.get('/category', async (req, res) => {
   try {
     const { category } = req.params;
-    
-    const products = await Product.findAll({
-      where: { 
-        categoryKey: category,
-        status: 'active' 
+
+    const categoryProducts = await Product.findAll({
+      where: {
+        status: 'active'
       },
-      order: [['displayOrder', 'ASC'], ['productName', 'ASC']]
+      order: [['displayOrder', 'ASC'], ['productName', 'ASC']],
+      group: ['categoryKey']
     });
 
     res.json({
-      category,
-      products: products.map(product => ({
-        id: product.id,
-        productName: product.productName,
-        specifications: product.specifications || [],
-        mainImage: product.mainImage,
-        galleryImages: product.galleryImages || [],
-        brochureUrl: product.brochureUrl
-      }))
+      category: categoryProducts
     });
   } catch (error) {
     console.error('Error fetching products by category:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch products by category',
-      message: error.message 
+      message: error.message
     });
   }
 });
@@ -44,17 +36,80 @@ router.get('/', async (req, res) => {
     });
 
     const groupedProducts = {};
-    products.forEach(product => {
-      if (!groupedProducts[product.categoryKey]) {
-        groupedProducts[product.categoryKey] = [];
+
+    products.forEach(({
+      id,
+      categoryKey,
+      productName,
+      specifications,
+      mainImage,
+      galleryImages,
+      brochureUrl
+    }) => {
+      if (!groupedProducts[categoryKey]) {
+        groupedProducts[categoryKey] = [];
       }
-      groupedProducts[product.categoryKey].push({
-        id: product.id,
-        productName: product.productName,
-        specifications: product.specifications || [],
-        mainImage: product.mainImage,
-        galleryImages: product.galleryImages || [],
-        brochureUrl: product.brochureUrl
+
+      const uploadUrl = process.env.UPLOAD_URL;
+
+      // 🔹 Normalize specifications
+      let normalizedSpecifications = [];
+      if (Array.isArray(specifications)) {
+        normalizedSpecifications = specifications;
+      } else if (typeof specifications === 'string') {
+        try {
+          const parsed = JSON.parse(specifications);
+          if (Array.isArray(parsed)) {
+            normalizedSpecifications = parsed;
+          } else {
+            normalizedSpecifications = specifications
+              .split(/\r?\n|,/g) // Split by line breaks or commas
+              .map(s => s.trim())
+              .filter(Boolean);
+          }
+        } catch {
+          normalizedSpecifications = specifications
+            .split(/\r?\n|,/g)
+            .map(s => s.trim())
+            .filter(Boolean);
+        }
+      } else if (typeof specifications === 'object' && specifications !== null) {
+        normalizedSpecifications = Object.values(specifications);
+      }
+
+      // 🔹 Normalize gallery images
+      let normalizedGallery = [];
+      if (Array.isArray(galleryImages)) {
+        normalizedGallery = galleryImages;
+      } else if (typeof galleryImages === 'string') {
+        try {
+          const parsed = JSON.parse(galleryImages);
+          if (Array.isArray(parsed)) {
+            normalizedGallery = parsed;
+          } else {
+            normalizedGallery = galleryImages
+              .split(/\r?\n|(?<=\.png|\.jpg|\.jpeg|\.webp)(?=\/uploads)/gi)
+              .map(s => s.trim())
+              .filter(Boolean);
+          }
+        } catch {
+          normalizedGallery = galleryImages
+            .split(/\r?\n|(?<=\.png|\.jpg|\.jpeg|\.webp)(?=\/uploads)/gi)
+            .map(s => s.trim())
+            .filter(Boolean);
+        }
+      } else if (typeof galleryImages === 'object' && galleryImages !== null) {
+        normalizedGallery = Object.values(galleryImages);
+      }
+
+      // 🔹 Push final product entry
+      groupedProducts[categoryKey].push({
+        id,
+        productName,
+        specifications: normalizedSpecifications,
+        mainImage: mainImage ? `${uploadUrl}${mainImage}` : null,
+        galleryImages: normalizedGallery.map(img => `${uploadUrl}${img}`),
+        brochureUrl
       });
     });
 
@@ -63,9 +118,9 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching products:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch products',
-      message: error.message 
+      message: error.message
     });
   }
 });
