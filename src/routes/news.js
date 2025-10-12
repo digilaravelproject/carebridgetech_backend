@@ -37,7 +37,7 @@ router.get('/pages', async (req, res) => {
         id: featuredArticle.id,
         title: featuredArticle.title,
         content: featuredArticle.content,
-        imageUrl: featuredArticle.imageUrl,
+        imageUrl: `${process.env.UPLOAD_URL}${featuredArticle.imageUrl}`,
         author: featuredArticle.author,
         authorPosition: featuredArticle.authorPosition,
         authorCompany: featuredArticle.authorCompany,
@@ -56,7 +56,7 @@ router.get('/pages', async (req, res) => {
         title: article.title,
         summary: article.summary,
         content: article.content,
-        imageUrl: article.imageUrl,
+        imageUrl: `${process.env.UPLOAD_URL}${article.imageUrl}`,
         author: article.author,
         authorPosition: article.authorPosition,
         authorCompany: article.authorCompany
