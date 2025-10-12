@@ -18,6 +18,17 @@ const {
   NewsArticle,
   NewsPageSettings,
   Platform,
+  // Product Details models
+  ProductPlatform,
+  PlatformFeature,
+  PlatformImage,
+  ProductContentSection,
+  ProductAchievement,
+  ProductTargetAudience,
+  ProductDeploymentOption,
+  DeploymentPlatformMapping,
+  ProductSolution,
+  ProductCTASection,
   // Home Page models
   HomeHero,
   HomeFeatures,
@@ -328,6 +339,250 @@ const adminJs = new AdminJS({
               rows: 5,
               placeholder: 'Enter benefits as JSON array, e.g., ["Benefit 1", "Benefit 2"]'
             }
+          }
+        }
+      }
+    },
+    // Product Details Page Management
+    {
+      resource: ProductPlatform,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['platformId', 'name', 'displayOrder', 'isActive'],
+        editProperties: ['platformId', 'name', 'logoUrl', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          platformId: {
+            description: 'Unique identifier: Consensus, CoddleOnline, Rhythms24x7'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 5 }
+          },
+          logoUrl: {
+            description: 'Enter logo path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/platform-logos') } },
+          properties: { key: 'logoUrl', bucket: 'platformLogos' }
+        })
+      ]
+    },
+    {
+      resource: PlatformFeature,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['platformId', 'title'],
+        editProperties: ['platformId', 'iconUrl', 'title', 'description'],
+        filterProperties: ['platformId'],
+        properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          iconUrl: {
+            description: 'Enter icon path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/features') } },
+          properties: { key: 'iconUrl', bucket: 'featureIcons' }
+        })
+      ]
+    },
+    {
+      resource: PlatformImage,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['platformId', 'altText', 'displayOrder'],
+        editProperties: ['platformId', 'imageUrl', 'altText', 'displayOrder'],
+        filterProperties: ['platformId'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
+          imageUrl: {
+            description: 'Enter image path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/platform-images') } },
+          properties: { key: 'imageUrl', bucket: 'platformImages' }
+        })
+      ]
+    },
+    {
+      resource: ProductContentSection,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'isActive'],
+        editProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'imageUrl', 'description', 'isActive'],
+        filterProperties: ['isActive'],
+        properties: {
+          sectionKey: {
+            description: 'Section identifier: how_it_works, achieve, target_audience, deployment, solutions'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          imageUrl: {
+            description: 'Enter image path or full URL from upload tool (optional)'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/sections') } },
+          properties: { key: 'imageUrl', bucket: 'sectionImages' }
+        })
+      ]
+    },
+    {
+      resource: ProductAchievement,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['title', 'displayOrder', 'isActive'],
+        editProperties: ['iconUrl', 'title', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          iconUrl: {
+            description: 'Enter icon path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/achievements') } },
+          properties: { key: 'iconUrl', bucket: 'achievementIcons' }
+        })
+      ]
+    },
+    {
+      resource: ProductTargetAudience,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['title', 'displayOrder', 'isActive'],
+        editProperties: ['imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          imageUrl: {
+            description: 'Enter image path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/audiences') } },
+          properties: { key: 'imageUrl', bucket: 'audienceImages' }
+        })
+      ]
+    },
+    {
+      resource: ProductDeploymentOption,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['title', 'displayOrder', 'isActive'],
+        editProperties: ['iconUrl', 'title', 'displayOrder', 'isActive'],
+        filterProperties: ['isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          iconUrl: {
+            description: 'Enter icon path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/deployments') } },
+          properties: { key: 'iconUrl', bucket: 'deploymentIcons' }
+        })
+      ]
+    },
+    {
+      resource: DeploymentPlatformMapping,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['deploymentOptionId', 'platformId'],
+        editProperties: ['deploymentOptionId', 'platformId'],
+        filterProperties: ['platformId'],
+        properties: {
+          deploymentOptionId: {
+            description: 'Select deployment option ID from ProductDeploymentOption table'
+          },
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          }
+        }
+      }
+    },
+    {
+      resource: ProductSolution,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['platformId', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['platformId', 'imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['platformId', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          platformId: {
+            description: 'Typically CoddleOnline, but can be any platform ID'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          imageUrl: {
+            description: 'Enter image path or full URL from upload tool'
+          }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/solutions') } },
+          properties: { key: 'imageUrl', bucket: 'solutionImages' }
+        })
+      ]
+    },
+    {
+      resource: ProductCTASection,
+      options: {
+        parent: { name: 'Product Details Page', icon: 'Layers' },
+        listProperties: ['platformId', 'title'],
+        editProperties: ['platformId', 'title', 'description', 'buttonText', 'buttonLink'],
+        filterProperties: ['platformId'],
+        properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
+          description: {
+            type: 'textarea',
+            props: { rows: 3 }
+          },
+          buttonLink: {
+            description: 'URL for the CTA button (e.g., /contact-us)'
           }
         }
       }

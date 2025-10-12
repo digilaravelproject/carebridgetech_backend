@@ -25,6 +25,14 @@ function ensureDirectories() {
     'uploads/testimonials',
     'uploads/social',
     'uploads/content',
+    'uploads/product-details/platform-logos',
+    'uploads/product-details/platform-images',
+    'uploads/product-details/features',
+    'uploads/product-details/sections',
+    'uploads/product-details/achievements',
+    'uploads/product-details/audiences',
+    'uploads/product-details/deployments',
+    'uploads/product-details/solutions',
     'assets'
   ];
 
@@ -92,6 +100,7 @@ app.use('/api/navigation', require('./src/routes/navigation'));
 app.use('/api/news', require('./src/routes/news'));
 app.use('/api/upload', require('./src/routes/upload'));
 app.use('/api/pages', require('./src/routes/home'));
+app.use('/api/product-details', require('./src/routes/product-details'));
 
 //here serve aupload html
 app.get('/upload', (req, res) => {
