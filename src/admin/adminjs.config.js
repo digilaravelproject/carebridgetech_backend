@@ -76,41 +76,41 @@ const adminJs = new AdminJS({
     }
   },
   resources: [
-    {
-      resource: ContentItem,
-      options: {
-        parent: { name: 'Content Management', icon: 'FileText' },
-        listProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentType', 'status'],
-        editProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentValue', 'imageUrl', 'contentType', 'displayOrder', 'status'],
-        filterProperties: ['pageKey', 'sectionKey', 'contentType', 'status'],
-        sort: { sortBy: 'pageKey', direction: 'asc' },
-        properties: {
-          contentValue: {
-            type: 'textarea',
-            props: {
-              rows: 4
-            },
-            description: 'Use this field for text/json content.'
-          },
-          // imageUrl: {
-          //   type: 'string',
-          //   props: {
-          //     placeholder: 'Paste image URL here after uploading via the Upload Tool'
-          //   },
-          //   description: '📸 UPLOAD TOOL: http://localhost:3000/upload-test.html (open in new tab) | 📖 INSTRUCTIONS: http://localhost:3000/admin-instructions.html | Upload image → Copy URL → Paste here'
-          // },
-          pageKey: {
-            description: 'Example: home, about, contact, news, product-details'
-          },
-          sectionKey: {
-            description: 'Example: hero, features, testimonials, team'
-          },
-          contentType: {
-            description: 'Select "image" when using imageUrl field, "text" for contentValue, "json" for structured data'
-          }
-        }
-      }
-    },
+    // {
+    //   resource: ContentItem,
+    //   options: {
+    //     parent: { name: 'Content Management', icon: 'FileText' },
+    //     listProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentType', 'status'],
+    //     editProperties: ['pageKey', 'sectionKey', 'contentKey', 'contentValue', 'imageUrl', 'contentType', 'displayOrder', 'status'],
+    //     filterProperties: ['pageKey', 'sectionKey', 'contentType', 'status'],
+    //     sort: { sortBy: 'pageKey', direction: 'asc' },
+    //     properties: {
+    //       contentValue: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 4
+    //         },
+    //         description: 'Use this field for text/json content.'
+    //       },
+    //       // imageUrl: {
+    //       //   type: 'string',
+    //       //   props: {
+    //       //     placeholder: 'Paste image URL here after uploading via the Upload Tool'
+    //       //   },
+    //       //   description: '📸 UPLOAD TOOL: http://localhost:3000/upload-test.html (open in new tab) | 📖 INSTRUCTIONS: http://localhost:3000/admin-instructions.html | Upload image → Copy URL → Paste here'
+    //       // },
+    //       pageKey: {
+    //         description: 'Example: home, about, contact, news, product-details'
+    //       },
+    //       sectionKey: {
+    //         description: 'Example: hero, features, testimonials, team'
+    //       },
+    //       contentType: {
+    //         description: 'Select "image" when using imageUrl field, "text" for contentValue, "json" for structured data'
+    //       }
+    //     }
+    //   }
+    // },
     {
       resource: TeamMember,
       options: {
@@ -135,51 +135,51 @@ const adminJs = new AdminJS({
         })
       ]
     },
-    {
-      resource: Product,
-      options: {
-        parent: { name: 'Product Management', icon: 'Package' },
-        listProperties: ['productName', 'categoryKey', 'status', 'displayOrder'],
-        editProperties: ['categoryKey', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
-        filterProperties: ['categoryKey', 'status'],
-        sort: { sortBy: 'displayOrder', direction: 'asc' },
-        properties: {
-          specifications: {
-            type: 'textarea',
-            props: {
-              rows: 6
-            }
-          },
-          galleryImages: {
-            type: 'textarea',
-            props: {
-              rows: 4
-            }
-          }
-        }
-      },
-      features: [
-        uploadFeature({
-          provider: { local: { bucket: path.join(__dirname, '../../uploads/products') } },
-          properties: { key: 'mainImage', bucket: 'productImages' }
-        })
-      ]
-    },
-    {
-      resource: CompanyLogo,
-      options: {
-        parent: { name: 'Brand Management', icon: 'Image' },
-        listProperties: ['companyName', 'status', 'displayOrder'],
-        editProperties: ['companyName', 'logoImage', 'displayOrder', 'status'],
-        sort: { sortBy: 'displayOrder', direction: 'asc' }
-      },
-      features: [
-        uploadFeature({
-          provider: { local: { bucket: path.join(__dirname, '../../uploads/logos') } },
-          properties: { key: 'logoImage', bucket: 'companyLogos' }
-        })
-      ]
-    },
+    // {
+    //   resource: Product,
+    //   options: {
+    //     parent: { name: 'Product Management', icon: 'Package' },
+    //     listProperties: ['productName', 'categoryKey', 'status', 'displayOrder'],
+    //     editProperties: ['categoryKey', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
+    //     filterProperties: ['categoryKey', 'status'],
+    //     sort: { sortBy: 'displayOrder', direction: 'asc' },
+    //     properties: {
+    //       specifications: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 6
+    //         }
+    //       },
+    //       galleryImages: {
+    //         type: 'textarea',
+    //         props: {
+    //           rows: 4
+    //         }
+    //       }
+    //     }
+    //   },
+    //   features: [
+    //     uploadFeature({
+    //       provider: { local: { bucket: path.join(__dirname, '../../uploads/products') } },
+    //       properties: { key: 'mainImage', bucket: 'productImages' }
+    //     })
+    //   ]
+    // },
+    // {
+    //   resource: CompanyLogo,
+    //   options: {
+    //     parent: { name: 'Brand Management', icon: 'Image' },
+    //     listProperties: ['companyName', 'status', 'displayOrder'],
+    //     editProperties: ['companyName', 'logoImage', 'displayOrder', 'status'],
+    //     sort: { sortBy: 'displayOrder', direction: 'asc' }
+    //   },
+    //   features: [
+    //     uploadFeature({
+    //       provider: { local: { bucket: path.join(__dirname, '../../uploads/logos') } },
+    //       properties: { key: 'logoImage', bucket: 'companyLogos' }
+    //     })
+    //   ]
+    // },
     {
       resource: FormSubmission,
       options: {
