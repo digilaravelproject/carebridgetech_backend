@@ -54,8 +54,8 @@ const adminJs = new AdminJS({
   branding: {
     companyName: 'CareBridge Admin',
     softwareBrothers: false,
-    logo: '/images/logo.svg',
-    favicon: '/favicon/favicon.ico',
+    logo: 'assets/images/logo.svg',
+    favicon: 'assets/favicon/favicon.ico',
     withMadeWithLove: false,
     theme: {
       colors: {
