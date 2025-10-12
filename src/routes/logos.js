@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
       companyLogos: logos.map(logo => ({
         id: logo.id,
         companyName: logo.companyName,
-        logoImage: `${logo.logoImage}`
+        logoImage: `${process.env.UPLOAD_URL}${logo.logoImage}`
       }))
     });
   } catch (error) {
