@@ -11,6 +11,17 @@ const NewsArticle = require('./NewsArticle');
 const NewsPageSettings = require('./NewsPageSettings');
 const Platform = require('./Platform');
 
+// Import Product Details models
+const ProductPlatform = require('./ProductPlatform');
+const PlatformFeature = require('./PlatformFeature');
+const PlatformImage = require('./PlatformImage');
+const ProductContentSection = require('./ProductContentSection');
+const ProductAchievement = require('./ProductAchievement');
+const ProductTargetAudience = require('./ProductTargetAudience');
+const { ProductDeploymentOption, DeploymentPlatformMapping } = require('./ProductDeploymentOption');
+const ProductSolution = require('./ProductSolution');
+const ProductCTASection = require('./ProductCTASection');
+
 // Import Home Page models
 const HomeHero = require('./HomeHero');
 const HomeFeatures = require('./HomeFeatures');
@@ -40,6 +51,17 @@ module.exports = {
   NewsArticle,
   NewsPageSettings,
   Platform,
+  // Product Details models
+  ProductPlatform,
+  PlatformFeature,
+  PlatformImage,
+  ProductContentSection,
+  ProductAchievement,
+  ProductTargetAudience,
+  ProductDeploymentOption,
+  DeploymentPlatformMapping,
+  ProductSolution,
+  ProductCTASection,
   // Home Page models
   HomeHero,
   HomeFeatures,

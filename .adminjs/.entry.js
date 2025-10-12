@@ -35,3 +35,51 @@ import Component16 from '../node_modules/@adminjs/upload/src/features/upload-fil
 AdminJS.UserComponents.Component16 = Component16
 import Component17 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
 AdminJS.UserComponents.Component17 = Component17
+import Component18 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component18 = Component18
+import Component19 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component19 = Component19
+import Component20 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component20 = Component20
+import Component21 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component21 = Component21
+import Component22 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component22 = Component22
+import Component23 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component23 = Component23
+import Component24 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component24 = Component24
+import Component25 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component25 = Component25
+import Component26 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component26 = Component26
+import Component27 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component27 = Component27
+import Component28 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component28 = Component28
+import Component29 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component29 = Component29
+import Component30 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component30 = Component30
+import Component31 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component31 = Component31
+import Component32 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component32 = Component32
+import Component33 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component33 = Component33
+import Component34 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component34 = Component34
+import Component35 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component35 = Component35
+import Component36 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component36 = Component36
+import Component37 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component37 = Component37
+import Component38 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component38 = Component38
+import Component39 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component39 = Component39
+import Component40 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component40 = Component40
+import Component41 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component41 = Component41
