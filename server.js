@@ -82,8 +82,8 @@ app.get('/admin/help', (req, res) => {
 app.use(adminJs.options.rootPath, adminRouter);
 
 // Body parser middleware AFTER AdminJS
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 // Serve static files (uploads, assets, and public)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
