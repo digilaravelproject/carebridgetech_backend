@@ -1,0 +1,27 @@
+Script started
+Database connected.
+Current indexes loaded
+Found unique index: section_key. Removing it...
+Index removed successfully.
+Done.
+Script started
+Database connected.
+Current indexes loaded
+Found unique index: section_key_2. Removing it...
+Old index removed successfully.
+Adding composite unique index (platform_id + section_key)...
+Composite unique index added successfully.
+Done.
+Script started
+Database connected.
+Current indexes loaded
+Found unique index: section_key_3. Removing it...
+Old index removed successfully.
+Adding composite unique index (platform_id + section_key)...
+Failed to add composite index: Duplicate key name 'product_content_sections_platform_id_section_key_unique'
+Done.
+Script started
+Database connected.
+Current indexes loaded
+Found unique index: product_content_sections_platform_id_section_key_unique. Removing it...
+Error: Cannot drop index 'product_content_sections_platform_id_section_key_unique': needed in a foreign key constraint

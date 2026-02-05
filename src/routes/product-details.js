@@ -14,9 +14,16 @@ const {
 } = require('../models');
 
 // GET /api/product-details - Get all product details content
+// GET /api/product-details - Get all product details content clustered by platform
 router.get('/', async (req, res) => {
   try {
     const uploadUrl = process.env.UPLOAD_URL || 'http://localhost:3000';
+
+    // Helper function to add upload URL to image paths
+    const addUploadUrl = (path) => {
+      if (!path) return path;
+      return path.startsWith('http') ? path : `${uploadUrl}${path}`;
+    };
 
     // Fetch all data in parallel
     const [
@@ -26,167 +33,101 @@ router.get('/', async (req, res) => {
       targetAudiences,
       deploymentOptions,
       solutions,
-      ctaSections
+      ctaSections,
+      allFeatures,
+      allImages
     ] = await Promise.all([
-      // Platforms with features and images
-      ProductPlatform.findAll({
-        where: { isActive: true },
-        order: [['displayOrder', 'ASC']],
-        raw: false
-      }),
-      // Content sections
-      ProductContentSection.findAll({
-        where: { isActive: true }
-      }),
-      // Achievements
-      ProductAchievement.findAll({
-        where: { isActive: true },
-        order: [['displayOrder', 'ASC']]
-      }),
-      // Target Audiences
-      ProductTargetAudience.findAll({
-        where: { isActive: true },
-        order: [['displayOrder', 'ASC']]
-      }),
-      // Deployment Options
-      ProductDeploymentOption.findAll({
-        where: { isActive: true },
-        order: [['displayOrder', 'ASC']]
-      }),
-      // Solutions
-      ProductSolution.findAll({
-        where: { isActive: true },
-        order: [['displayOrder', 'ASC']]
-      }),
-      // CTA Sections
-      ProductCTASection.findAll()
+      ProductPlatform.findAll({ where: { isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductContentSection.findAll({ where: { isActive: true } }),
+      ProductAchievement.findAll({ where: { isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductTargetAudience.findAll({ where: { isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductDeploymentOption.findAll({ where: { isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductSolution.findAll({ where: { isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductCTASection.findAll(),
+      PlatformFeature.findAll(),
+      PlatformImage.findAll({ order: [['displayOrder', 'ASC']] })
     ]);
 
-    // Fetch features and images for each platform
-    const platformsWithDetails = await Promise.all(
-      platforms.map(async (platform) => {
-        const [feature, images] = await Promise.all([
-          PlatformFeature.findOne({
-            where: { platformId: platform.platformId }
-          }),
-          PlatformImage.findAll({
-            where: { platformId: platform.platformId },
-            order: [['displayOrder', 'ASC']]
-          })
-        ]);
+    // Build platform-centric structure
+    const platformsData = platforms.map(platform => {
+      const pid = platform.platformId;
 
-        return {
-          platform,
-          feature,
-          images
+      // Filter data for this platform
+      const pFeature = allFeatures.find(f => f.platformId === pid);
+      const pImages = allImages.filter(img => img.platformId === pid);
+      const pSolutions = solutions.filter(s => s.platformId === pid);
+      const pCta = ctaSections.find(c => c.platformId === pid);
+      const pSections = sections.filter(s => s.platformId === pid);
+      const pAchievements = achievements.filter(a => a.platformId === pid);
+      const pAudiences = targetAudiences.filter(a => a.platformId === pid);
+      const pDeployments = deploymentOptions.filter(d => d.platformId === pid);
+
+      // Format sections as object keyed by sectionKey
+      const sectionsObj = {};
+      pSections.forEach(section => {
+        const key = section.sectionKey.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+        sectionsObj[key] = {
+          title: {
+            main: section.titleMain,
+            highlight: section.titleHighlight
+          }
         };
-      })
-    );
-
-    // Fetch deployment mappings
-    const deploymentMappings = await DeploymentPlatformMapping.findAll();
-
-    // Helper function to add upload URL to image paths
-    const addUploadUrl = (path) => {
-      if (!path) return path;
-      return path.startsWith('http') ? path : `${uploadUrl}${path}`;
-    };
-
-    // Build platforms array
-    const platformsData = platformsWithDetails.map(({ platform, feature, images }) => ({
-      id: platform.platformId,
-      name: platform.name,
-      logo: addUploadUrl(platform.logoUrl),
-      description: platform.description,
-      feature: feature ? {
-        icon: addUploadUrl(feature.iconUrl),
-        title: feature.title,
-        description: feature.description
-      } : undefined,
-      images: images.map(img => addUploadUrl(img.imageUrl))
-    }));
-
-    // Build sections object
-    const sectionsData = {};
-    sections.forEach(section => {
-      const key = section.sectionKey.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
-      sectionsData[key] = {
-        title: {
-          main: section.titleMain,
-          highlight: section.titleHighlight
-        }
-      };
-      if (section.imageUrl) {
-        sectionsData[key].image = addUploadUrl(section.imageUrl);
-      }
-      if (section.description) {
-        sectionsData[key].description = section.description;
-      }
-    });
-
-    // Build achievements array
-    const achievementsData = achievements.map(achievement => ({
-      id: achievement.id,
-      icon: addUploadUrl(achievement.iconUrl),
-      title: achievement.title,
-      description: achievement.description
-    }));
-
-    // Build target audiences array
-    const targetAudiencesData = targetAudiences.map(audience => ({
-      id: audience.id,
-      image: addUploadUrl(audience.imageUrl),
-      title: audience.title,
-      description: audience.description
-    }));
-
-    // Build deployment options with applicable tabs
-    const deploymentOptionsData = deploymentOptions.map(option => {
-      const applicableTabs = deploymentMappings
-        .filter(mapping => mapping.deploymentOptionId === option.id)
-        .map(mapping => mapping.platformId);
+        if (section.imageUrl) sectionsObj[key].image = addUploadUrl(section.imageUrl);
+        if (section.description) sectionsObj[key].description = section.description;
+      });
 
       return {
-        id: option.id,
-        icon: addUploadUrl(option.iconUrl),
-        title: option.title,
-        applicableTabs
+        id: platform.platformId,
+        name: platform.name,
+        logo: addUploadUrl(platform.logoUrl),
+        description: platform.description,
+        feature: pFeature ? {
+            icon: addUploadUrl(pFeature.iconUrl),
+            title: pFeature.title,
+            description: pFeature.description
+        } : null,
+        images: pImages.map(img => addUploadUrl(img.imageUrl)),
+        solutions: pSolutions.map(s => ({
+            id: s.id,
+            image: addUploadUrl(s.imageUrl),
+            title: s.title,
+            description: s.description
+        })),
+        cta: pCta ? {
+            title: pCta.title,
+            description: pCta.description,
+            buttonText: pCta.buttonText,
+            buttonLink: pCta.buttonLink
+        } : null,
+        // NEW NESTED DATA
+        sections: sectionsObj,
+        achievements: pAchievements.map(a => ({
+            id: a.id,
+            icon: addUploadUrl(a.iconUrl),
+            title: a.title,
+            description: a.description
+        })),
+        targetAudiences: pAudiences.map(a => ({
+            id: a.id,
+            image: addUploadUrl(a.imageUrl),
+            title: a.title,
+            description: a.description
+        })),
+        deploymentOptions: pDeployments.map(d => ({
+            id: d.id,
+            icon: addUploadUrl(d.iconUrl),
+            title: d.title
+        }))
       };
     });
 
-    // Build solutions array
-    const solutionsData = solutions.map(solution => ({
-      id: solution.id,
-      platformId: solution.platformId,
-      image: addUploadUrl(solution.imageUrl),
-      title: solution.title,
-      description: solution.description
-    }));
-
-    // Build CTA sections array
-    const ctaSectionsData = ctaSections.map(cta => ({
-      platformId: cta.platformId,
-      title: cta.title,
-      description: cta.description,
-      buttonText: cta.buttonText,
-      buttonLink: cta.buttonLink
-    }));
-
-    // Build final response
-    const response = {
+    res.json({
       success: true,
       data: {
-        platforms: platformsData,
-        sections: sectionsData,
-        achievements: achievementsData,
-        targetAudiences: targetAudiencesData,
-        deploymentOptions: deploymentOptionsData,
-        solutions: solutionsData,
-        ctaSections: ctaSectionsData
+        platforms: platformsData
       }
-    };
+    });
 
-    res.json(response);
   } catch (error) {
     console.error('Error fetching product details:', error);
     res.status(500).json({
@@ -216,21 +157,15 @@ router.get('/:platformId', async (req, res) => {
     }
 
     // Fetch platform details
-    const [feature, images, solutions, cta] = await Promise.all([
-      PlatformFeature.findOne({
-        where: { platformId }
-      }),
-      PlatformImage.findAll({
-        where: { platformId },
-        order: [['displayOrder', 'ASC']]
-      }),
-      ProductSolution.findAll({
-        where: { platformId, isActive: true },
-        order: [['displayOrder', 'ASC']]
-      }),
-      ProductCTASection.findOne({
-        where: { platformId }
-      })
+    const [feature, images, solutions, cta, sections, achievements, targetAudiences, deploymentOptions] = await Promise.all([
+      PlatformFeature.findOne({ where: { platformId } }),
+      PlatformImage.findAll({ where: { platformId }, order: [['displayOrder', 'ASC']] }),
+      ProductSolution.findAll({ where: { platformId, isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductCTASection.findOne({ where: { platformId } }),
+      ProductContentSection.findAll({ where: { platformId, isActive: true } }),
+      ProductAchievement.findAll({ where: { platformId, isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductTargetAudience.findAll({ where: { platformId, isActive: true }, order: [['displayOrder', 'ASC']] }),
+      ProductDeploymentOption.findAll({ where: { platformId, isActive: true }, order: [['displayOrder', 'ASC']] })
     ]);
 
     // Helper function to add upload URL
@@ -238,6 +173,20 @@ router.get('/:platformId', async (req, res) => {
       if (!path) return path;
       return path.startsWith('http') ? path : `${uploadUrl}${path}`;
     };
+
+    // Process sections into keyed object
+    const sectionsData = {};
+    sections.forEach(section => {
+      const key = section.sectionKey.replace(/_([a-z])/g, (g) => g[1].toUpperCase());
+      sectionsData[key] = {
+        title: {
+          main: section.titleMain,
+          highlight: section.titleHighlight
+        }
+      };
+      if (section.imageUrl) sectionsData[key].image = addUploadUrl(section.imageUrl);
+      if (section.description) sectionsData[key].description = section.description;
+    });
 
     // Build response
     const response = {
@@ -264,7 +213,25 @@ router.get('/:platformId', async (req, res) => {
           description: cta.description,
           buttonText: cta.buttonText,
           buttonLink: cta.buttonLink
-        } : null
+        } : null,
+        sections: sectionsData,
+        achievements: achievements.map(a => ({
+          id: a.id,
+          icon: addUploadUrl(a.iconUrl),
+          title: a.title,
+          description: a.description
+        })),
+        targetAudiences: targetAudiences.map(a => ({
+          id: a.id,
+          image: addUploadUrl(a.imageUrl),
+          title: a.title,
+          description: a.description
+        })),
+        deploymentOptions: deploymentOptions.map(d => ({
+          id: d.id,
+          icon: addUploadUrl(d.iconUrl),
+          title: d.title
+        }))
       }
     };
 

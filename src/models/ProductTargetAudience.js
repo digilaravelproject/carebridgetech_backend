@@ -12,6 +12,15 @@ const ProductTargetAudience = sequelize.define('ProductTargetAudience', {
     allowNull: false,
     field: 'image_url'
   },
+  platformId: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    field: 'platform_id',
+    references: {
+      model: 'product_platforms',
+      key: 'platform_id'
+    }
+  },
   title: {
     type: DataTypes.STRING(200),
     allowNull: false

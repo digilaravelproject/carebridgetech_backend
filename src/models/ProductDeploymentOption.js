@@ -12,6 +12,15 @@ const ProductDeploymentOption = sequelize.define('ProductDeploymentOption', {
     allowNull: false,
     field: 'icon_url'
   },
+  platformId: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    field: 'platform_id',
+    references: {
+      model: 'product_platforms',
+      key: 'platform_id'
+    }
+  },
   title: {
     type: DataTypes.STRING(200),
     allowNull: false
