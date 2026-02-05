@@ -36,12 +36,31 @@ const HomeCTA = require('./HomeCTA');
 const AboutPageSettings = require('./AboutPageSettings');
 const AboutMissionFeature = require('./AboutMissionFeature');
 const AboutStatistic = require('./AboutStatistic');
+const ContactDetails = require('./ContactDetails');
 
 // No relationships needed for the simplified schema
+
+// Define relationships for dynamic AdminJS dropdowns
+// This tells AdminJS to fetch available platforms from the database and use platformId (string) as the link
+ProductPlatform.hasMany(PlatformFeature, { foreignKey: 'platformId', sourceKey: 'platformId' });
+PlatformFeature.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(PlatformImage, { foreignKey: 'platformId', sourceKey: 'platformId' });
+PlatformImage.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(ProductSolution, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductSolution.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(ProductCTASection, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductCTASection.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(DeploymentPlatformMapping, { foreignKey: 'platformId', sourceKey: 'platformId' });
+DeploymentPlatformMapping.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
 
 // Export all models and sequelize instance
 module.exports = {
   sequelize,
+  ContactDetails,
   ContentItem,
   TeamMember,
   Product,

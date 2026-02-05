@@ -8,7 +8,8 @@ const {
   MenuItem,
   NewsArticle,
   NewsPageSettings,
-  Platform
+  Platform,
+  ContactDetails
 } = require('../models');
 
 async function createTables() {
@@ -385,6 +386,47 @@ async function seedInitialData() {
       await Platform.findOrCreate({
         where: { platformKey: platform.platformKey },
         defaults: platform
+      });
+    }
+
+    // Seed Contact Details
+    const contactDetails = [
+      {
+        sectionTitle: 'OUR COMPANY',
+        entityName: 'Carebridge Technologies India Private Limited',
+        address: 'EL 66, TTC Industrial Area, Electronic Zone,\nMahape, Navi Mumbai - 400 710, INDIA',
+        phoneNumbers: '022-27611193/94',
+        fax: '022-27610093',
+        emails: 'tendulkar@metsl.in',
+        displayOrder: 1,
+        isActive: true
+      },
+      {
+        sectionTitle: 'REGISTRAR & TRANSFER AGENTS',
+        entityName: 'Link Intime India Private Limited',
+        address: 'C 101, 247 Park, L.B.S.Marg, Vikhroli\n(West),Mumbai - 400083',
+        phoneNumbers: '022 - 4918 6270',
+        fax: '022 - 4918 6060',
+        emails: 'rnt.helpdesk@linkintime.co.in',
+        displayOrder: 2,
+        isActive: true
+      },
+      {
+        sectionTitle: 'DETERMINING MATERIALITY OF EVENT AND MAKING DISCLOSURES',
+        entityName: 'Mr. Harshad Patel',
+        address: '', // No address provided for this entry
+        phoneNumbers: '022-27611193/94',
+        fax: '',
+        emails: 'cs@metsl.in',
+        displayOrder: 3,
+        isActive: true
+      }
+    ];
+
+    for (const contact of contactDetails) {
+      await ContactDetails.findOrCreate({
+        where: { sectionTitle: contact.sectionTitle },
+        defaults: contact
       });
     }
 

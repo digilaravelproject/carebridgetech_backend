@@ -105,6 +105,7 @@ app.use('/api/news', require('./src/routes/news'));
 app.use('/api/upload', require('./src/routes/upload'));
 app.use('/api/pages', require('./src/routes/home'));
 app.use('/api/product-details', require('./src/routes/product-details'));
+app.use('/api/contact', require('./src/routes/contact'));
 
 //here serve aupload html
 app.get('/upload', (req, res) => {

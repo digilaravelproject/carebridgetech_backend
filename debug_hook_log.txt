@@ -1,0 +1,10 @@
+2026-02-05T06:45:28.388Z: HOOK CALL: method=get
+2026-02-05T06:45:34.279Z: HOOK CALL: method=post
+2026-02-05T06:45:34.280Z: PAYLOAD: {"id":"1","displayOrder":"1","altText":"Consensus screenshot 1","imageUrl":"/uploads/content/1770272753489-home-healthcare.jpg","platformId":"2"}
+2026-02-05T06:45:34.280Z: Parsing PK: 2
+2026-02-05T06:45:34.282Z: FOUND PLATFORM: CoddleOnline
+2026-02-05T06:50:50.736Z: HOOK CALL: method=get
+2026-02-05T06:51:01.210Z: HOOK CALL: method=post
+2026-02-05T06:51:01.210Z: PAYLOAD: {"id":"15","altText":"Rhythms24x7 screenshot 3","imageUrl":"/uploads/content/1770272753489-home-healthcare.jpg","platformId":"3","displayOrder":"3"}
+2026-02-05T06:51:01.215Z: Parsing PK: 3
+2026-02-05T06:51:01.217Z: FOUND PLATFORM: Rhythms24x7
