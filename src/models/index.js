@@ -57,6 +57,19 @@ ProductCTASection.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetK
 ProductPlatform.hasMany(DeploymentPlatformMapping, { foreignKey: 'platformId', sourceKey: 'platformId' });
 DeploymentPlatformMapping.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
 
+// Add new platform-specific associations
+ProductPlatform.hasMany(ProductContentSection, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductContentSection.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(ProductAchievement, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductAchievement.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(ProductTargetAudience, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductTargetAudience.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
+ProductPlatform.hasMany(ProductDeploymentOption, { foreignKey: 'platformId', sourceKey: 'platformId' });
+ProductDeploymentOption.belongsTo(ProductPlatform, { foreignKey: 'platformId', targetKey: 'platformId' });
+
 // Export all models and sequelize instance
 module.exports = {
   sequelize,

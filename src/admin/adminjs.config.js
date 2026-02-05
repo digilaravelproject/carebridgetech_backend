@@ -1,7 +1,11 @@
 const AdminJS = require('adminjs');
+const { ComponentLoader } = require('adminjs');
+const componentLoader = new ComponentLoader();
+const path = require('path');
+
+const uploadToolComponent = componentLoader.add('UploadTool', path.resolve(__dirname, './components/upload-tool.jsx'));
 const AdminJSSequelize = require('@adminjs/sequelize');
 const uploadFeature = require('@adminjs/upload');
-const path = require('path');
 const Dashboard = require('./dashboard');
 
 // Register Sequelize adapter
@@ -121,6 +125,21 @@ const adminJs = new AdminJS({
         filterBg: '#f8f9fa',
         accent: '#007BA7',
         hoverBg: '#f1f1f1'
+      }
+    }
+  },
+  assets: {
+    styles: ['/admin-custom.css']
+  },
+  componentLoader,
+  pages: {
+    'Upload Media': {
+      component: uploadToolComponent,
+      icon: 'UploadCloud',
+      handler: async (request, response, context) => {
+        return {
+          text: 'Upload Media'
+        }
       }
     }
   },
@@ -484,10 +503,13 @@ const adminJs = new AdminJS({
       resource: ProductContentSection,
       options: {
         parent: { name: 'Platforms', icon: 'Layers' },
-        listProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'isActive'],
-        editProperties: ['sectionKey', 'titleMain', 'titleHighlight', 'imageUrl', 'description', 'isActive'],
-        filterProperties: ['isActive'],
+        listProperties: ['platformId', 'sectionKey', 'titleMain', 'isActive'],
+        editProperties: ['platformId', 'sectionKey', 'titleMain', 'titleHighlight', 'imageUrl', 'description', 'isActive'],
+        filterProperties: ['platformId', 'isActive'],
         properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7. Select "CoddleOnline" as default for migrated content.'
+          },
           sectionKey: {
             description: 'Section identifier: how_it_works, achieve, target_audience, deployment, solutions'
           },
@@ -498,6 +520,10 @@ const adminJs = new AdminJS({
           imageUrl: {
             description: 'Enter image path or full URL from upload tool (optional)'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
@@ -511,11 +537,14 @@ const adminJs = new AdminJS({
       resource: ProductAchievement,
       options: {
         parent: { name: 'Platforms', icon: 'Layers' },
-        listProperties: ['title', 'displayOrder', 'isActive'],
-        editProperties: ['iconUrl', 'title', 'description', 'displayOrder', 'isActive'],
-        filterProperties: ['isActive'],
+        listProperties: ['platformId', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['platformId', 'iconUrl', 'title', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['platformId', 'isActive'],
         sort: { sortBy: 'displayOrder', direction: 'asc' },
         properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
           description: {
             type: 'textarea',
             props: { rows: 3 }
@@ -523,6 +552,10 @@ const adminJs = new AdminJS({
           iconUrl: {
             description: 'Enter icon path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
@@ -536,11 +569,14 @@ const adminJs = new AdminJS({
       resource: ProductTargetAudience,
       options: {
         parent: { name: 'Platforms', icon: 'Layers' },
-        listProperties: ['title', 'displayOrder', 'isActive'],
-        editProperties: ['imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
-        filterProperties: ['isActive'],
+        listProperties: ['platformId', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['platformId', 'imageUrl', 'title', 'description', 'displayOrder', 'isActive'],
+        filterProperties: ['platformId', 'isActive'],
         sort: { sortBy: 'displayOrder', direction: 'asc' },
         properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
           description: {
             type: 'textarea',
             props: { rows: 3 }
@@ -548,6 +584,10 @@ const adminJs = new AdminJS({
           imageUrl: {
             description: 'Enter image path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
@@ -561,14 +601,21 @@ const adminJs = new AdminJS({
       resource: ProductDeploymentOption,
       options: {
         parent: { name: 'Platforms', icon: 'Layers' },
-        listProperties: ['title', 'displayOrder', 'isActive'],
-        editProperties: ['iconUrl', 'title', 'displayOrder', 'isActive'],
-        filterProperties: ['isActive'],
+        listProperties: ['platformId', 'title', 'displayOrder', 'isActive'],
+        editProperties: ['platformId', 'iconUrl', 'title', 'displayOrder', 'isActive'],
+        filterProperties: ['platformId', 'isActive'],
         sort: { sortBy: 'displayOrder', direction: 'asc' },
         properties: {
+          platformId: {
+            description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
+          },
           iconUrl: {
             description: 'Enter icon path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [

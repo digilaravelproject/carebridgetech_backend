@@ -83,3 +83,5 @@ import Component40 from '../node_modules/@adminjs/upload/src/features/upload-fil
 AdminJS.UserComponents.Component40 = Component40
 import Component41 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
 AdminJS.UserComponents.Component41 = Component41
+import UploadTool from '../src/admin/components/upload-tool'
+AdminJS.UserComponents.UploadTool = UploadTool

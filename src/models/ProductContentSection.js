@@ -10,9 +10,17 @@ const ProductContentSection = sequelize.define('ProductContentSection', {
   sectionKey: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true,
     field: 'section_key',
     comment: 'how_it_works, achieve, target_audience, deployment, solutions'
+  },
+  platformId: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    field: 'platform_id',
+    references: {
+      model: 'product_platforms',
+      key: 'platform_id'
+    }
   },
   titleMain: {
     type: DataTypes.STRING(200),
@@ -41,7 +49,13 @@ const ProductContentSection = sequelize.define('ProductContentSection', {
 }, {
   tableName: 'product_content_sections',
   timestamps: true,
-  underscored: true
+  underscored: true,
+  indexes: [
+    {
+      unique: true,
+      fields: ['platform_id', 'section_key']
+    }
+  ]
 });
 
 module.exports = ProductContentSection;

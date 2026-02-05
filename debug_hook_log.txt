@@ -8,3 +8,91 @@
 2026-02-05T06:51:01.210Z: PAYLOAD: {"id":"15","altText":"Rhythms24x7 screenshot 3","imageUrl":"/uploads/content/1770272753489-home-healthcare.jpg","platformId":"3","displayOrder":"3"}
 2026-02-05T06:51:01.215Z: Parsing PK: 3
 2026-02-05T06:51:01.217Z: FOUND PLATFORM: Rhythms24x7
+2026-02-05T07:54:32.113Z: HOOK CALL: method=get
+2026-02-05T07:55:40.005Z: HOOK CALL: method=get
+2026-02-05T07:56:16.904Z: HOOK CALL: method=post
+2026-02-05T07:56:16.905Z: PAYLOAD: {"platformId":"1","sectionKey":"how_it_works","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","isActive":true,"titleMain":"1 HOW IT"}
+2026-02-05T07:56:16.906Z: Parsing PK: 1
+2026-02-05T07:56:16.908Z: FOUND PLATFORM: Consensus
+2026-02-05T07:56:30.848Z: HOOK CALL: method=post
+2026-02-05T07:56:30.849Z: PAYLOAD: {"sectionKey":"how_it_works","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","isActive":true,"titleMain":"1 HOW IT","platformId":"1"}
+2026-02-05T07:56:30.849Z: Parsing PK: 1
+2026-02-05T07:56:30.851Z: FOUND PLATFORM: Consensus
+2026-02-05T07:56:37.726Z: HOOK CALL: method=post
+2026-02-05T07:56:37.726Z: PAYLOAD: {"sectionKey":"how_it_works","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","isActive":true,"titleMain":"1 HOW IT","platformId":"Consensus"}
+2026-02-05T07:56:37.727Z: Parsing PK: NaN
+2026-02-05T07:56:37.727Z: ALREADY STRING/INVALID: Consensus
+2026-02-05T07:58:33.979Z: HOOK CALL: method=post
+2026-02-05T07:58:33.980Z: PAYLOAD: {"titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","isActive":true,"titleMain":"1 HOW IT","sectionKey":"how_it_works1","platformId":"1"}
+2026-02-05T07:58:33.980Z: Parsing PK: 1
+2026-02-05T07:58:33.982Z: FOUND PLATFORM: Consensus
+2026-02-05T07:58:40.937Z: HOOK CALL: method=get
+2026-02-05T07:58:48.519Z: HOOK CALL: method=post
+2026-02-05T07:58:48.519Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"1"}
+2026-02-05T07:58:48.520Z: Parsing PK: 1
+2026-02-05T07:58:48.522Z: FOUND PLATFORM: Consensus
+2026-02-05T08:01:25.544Z: HOOK CALL: method=get
+2026-02-05T08:01:30.513Z: HOOK CALL: method=post
+2026-02-05T08:01:30.513Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"1"}
+2026-02-05T08:01:30.514Z: Parsing PK: 1
+2026-02-05T08:01:30.516Z: FOUND PLATFORM: Consensus
+2026-02-05T08:01:52.468Z: HOOK CALL: method=get
+2026-02-05T08:01:58.520Z: HOOK CALL: method=post
+2026-02-05T08:01:58.521Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"1"}
+2026-02-05T08:01:58.521Z: Parsing PK: 1
+2026-02-05T08:01:58.524Z: FOUND PLATFORM: Consensus
+2026-02-05T08:04:18.114Z: HOOK CALL: method=get
+2026-02-05T08:04:24.911Z: HOOK CALL: method=post
+2026-02-05T08:04:24.911Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"1"}
+2026-02-05T08:04:24.911Z: Parsing PK: 1
+2026-02-05T08:04:24.912Z: FOUND PLATFORM: Consensus
+2026-02-05T08:04:30.498Z: HOOK CALL: method=post
+2026-02-05T08:04:30.498Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"3"}
+2026-02-05T08:04:30.499Z: Parsing PK: 3
+2026-02-05T08:04:30.500Z: FOUND PLATFORM: Rhythms24x7
+2026-02-05T08:21:41.267Z: HOOK CALL: method=get
+2026-02-05T08:21:48.058Z: HOOK CALL: method=post
+2026-02-05T08:21:48.058Z: PAYLOAD: {"id":"9","titleMain":"1 HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1760284493461-work.svg","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T07:58:33.000Z","sectionKey":"how_it_works","platformId":"1"}
+2026-02-05T08:21:48.058Z: Parsing PK: 1
+2026-02-05T08:21:48.060Z: FOUND PLATFORM: Consensus
+2026-02-05T09:26:37.964Z: HOOK CALL: method=get
+2026-02-05T09:27:26.655Z: HOOK CALL: method=post
+2026-02-05T09:27:26.656Z: PAYLOAD: {"iconUrl":"/uploads/content/1760284553308-cut-travel.svg","title":"Cut Travel & Wait Times 1","description":"Connect patients with doctors instantly, eliminating long commutes and clinic queues","platformId":"1","displayOrder":"2","isActive":true}
+2026-02-05T09:27:26.656Z: Parsing PK: 1
+2026-02-05T09:27:26.657Z: FOUND PLATFORM: Consensus
+2026-02-05T10:38:32.287Z: HOOK CALL: method=get
+2026-02-05T10:39:06.517Z: HOOK CALL: method=post
+2026-02-05T10:39:06.518Z: PAYLOAD: {"id":"9","sectionKey":"how_it_works","titleHighlight":"WORKS","description":null,"isActive":true,"createdAt":"2026-02-05T07:58:33.000Z","updatedAt":"2026-02-05T08:21:48.000Z","titleMain":"HOW IT","imageUrl":"/uploads/content/1770287926000-c1.svg","platformId":"1"}
+2026-02-05T10:39:06.518Z: Parsing PK: 1
+2026-02-05T10:39:06.520Z: FOUND PLATFORM: Consensus
+2026-02-05T10:39:10.964Z: HOOK CALL: method=get
+2026-02-05T10:39:27.107Z: HOOK CALL: method=post
+2026-02-05T10:39:27.108Z: PAYLOAD: {"id":"1","sectionKey":"how_it_works","titleMain":"HOW IT","titleHighlight":"WORKS","description":null,"isActive":true,"createdAt":"2025-10-12T14:11:47.000Z","updatedAt":"2025-10-12T15:55:00.000Z","imageUrl":"/uploads/content/1770287956138-c2.svg","platformId":"2"}
+2026-02-05T10:39:27.108Z: Parsing PK: 2
+2026-02-05T10:39:27.109Z: FOUND PLATFORM: CoddleOnline
+2026-02-05T10:40:15.494Z: HOOK CALL: method=post
+2026-02-05T10:40:15.494Z: PAYLOAD: {"platformId":"3","sectionKey":"how_it_works","titleMain":"HOW IT","titleHighlight":"WORKS","imageUrl":"/uploads/content/1770288006560-c3.svg","isActive":true}
+2026-02-05T10:40:15.495Z: Parsing PK: 3
+2026-02-05T10:40:15.501Z: FOUND PLATFORM: Rhythms24x7
+2026-02-05T10:43:39.243Z: HOOK CALL: method=get
+2026-02-05T10:43:46.869Z: HOOK CALL: method=post
+2026-02-05T10:43:46.870Z: PAYLOAD: {"id":"1","altText":"Consensus screenshot 1","imageUrl":"/uploads/content/1770288201739-online-marketing-hIgeoQjS_iE-unsplash.jpg","platformId":"1","displayOrder":"1"}
+2026-02-05T10:43:46.870Z: Parsing PK: 1
+2026-02-05T10:43:46.871Z: FOUND PLATFORM: Consensus
+2026-02-05T10:45:14.253Z: HOOK CALL: method=post
+2026-02-05T10:45:14.254Z: PAYLOAD: {"platformId":"1","iconUrl":"/uploads/content/1760284538986-reach-remote.svg","title":"Reach Remote Communities","description":"Deliver quality healthcare to rural and underserved areas through teleconsultations and remote diagnostics","displayOrder":"1","isActive":true}
+2026-02-05T10:45:14.254Z: Parsing PK: 1
+2026-02-05T10:45:14.257Z: FOUND PLATFORM: Consensus
+2026-02-05T10:46:27.148Z: HOOK CALL: method=post
+2026-02-05T10:46:27.149Z: PAYLOAD: {"titleMain":"who is it","titleHighlight":"for","platformId":"1","sectionKey":"target_audience","imageUrl":"/uploads/content/1770288201739-online-marketing-hIgeoQjS_iE-unsplash.jpg","isActive":true}
+2026-02-05T10:46:27.149Z: Parsing PK: 1
+2026-02-05T10:46:27.153Z: FOUND PLATFORM: Consensus
+2026-02-05T10:47:37.763Z: HOOK CALL: method=post
+2026-02-05T10:47:37.764Z: PAYLOAD: {"platformId":"1","imageUrl":"/uploads/content/1770288201739-online-marketing-hIgeoQjS_iE-unsplash.jpg","title":"Primary Health Centres","description":"Lorem ipsum dolor sit amet consecte turole adipiscing elit semper dalaracc lacus velolte facilisis volutpat est velitolm.","displayOrder":"1","isActive":true}
+2026-02-05T10:47:37.764Z: Parsing PK: 1
+2026-02-05T10:47:37.768Z: FOUND PLATFORM: Consensus
+2026-02-05T10:50:39.624Z: HOOK CALL: method=get
+2026-02-05T10:50:47.741Z: HOOK CALL: method=post
+2026-02-05T10:50:47.741Z: PAYLOAD: {"id":"1","platformId":"CoddleOnline","title":"Primary Health Centres","description":"Lorem ipsum dolor sit amet consecte turole adipiscing elit semper dalaracc lacus velolte facilisis volutpat est velitolm.","displayOrder":"1","isActive":true,"createdAt":"2025-10-12T14:11:47.000Z","updatedAt":"2025-10-12T15:56:47.000Z","imageUrl":"/uploads/content/1770288622322-home-healthcare.jpg"}
+2026-02-05T10:50:47.742Z: Parsing PK: NaN
+2026-02-05T10:50:47.742Z: ALREADY STRING/INVALID: CoddleOnline
