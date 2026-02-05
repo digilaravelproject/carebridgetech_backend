@@ -46,8 +46,57 @@ const {
   // About Page models
   AboutPageSettings,
   AboutMissionFeature,
-  AboutStatistic
+  AboutStatistic,
+  ContactDetails
 } = require('../models');
+
+const fs = require('fs');
+
+// Hook to fix platformId foreign key issue
+// AdminJS sends the integer ID (PK) from the dropdown, but we need the string ID
+const fixPlatformId = async (request, context) => {
+  const { payload = {}, method } = request;
+  const logFile = path.join(__dirname, '../../debug_hook_log.txt');
+  
+  const log = (msg) => {
+    try {
+      fs.appendFileSync(logFile, new Date().toISOString() + ': ' + msg + '\n');
+    } catch (e) { /* ignore */ }
+  };
+
+  log(`HOOK CALL: method=${method}`);
+  
+  if (method.toLowerCase() !== 'post') return request;
+
+  log(`PAYLOAD: ${JSON.stringify(payload)}`);
+
+  if (payload.platformId) {
+    const platformPk = parseInt(payload.platformId, 10);
+    log(`Parsing PK: ${platformPk}`);
+
+    if (!isNaN(platformPk)) {
+      try {
+        // const platform = await ProductPlatform.findOne({ where: { id: platformPk } });
+        const platform = await ProductPlatform.findByPk(platformPk);
+        
+        if (platform) {
+          log(`FOUND PLATFORM: ${platform.platformId}`);
+          payload.platformId = platform.platformId;
+        } else {
+          log(`NOT FOUND: ${platformPk}`);
+        }
+      } catch (error) {
+        log(`ERROR: ${error.message}`);
+      }
+    } else {
+      log(`ALREADY STRING/INVALID: ${payload.platformId}`);
+    }
+  } else {
+    log('NO PLATFORM ID IN PAYLOAD');
+  }
+  
+  return request;
+};
 
 const adminJs = new AdminJS({
   rootPath: '/admin',
@@ -390,6 +439,10 @@ const adminJs = new AdminJS({
           iconUrl: {
             description: 'Enter icon path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
@@ -414,6 +467,10 @@ const adminJs = new AdminJS({
           imageUrl: {
             description: 'Enter image path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
@@ -535,6 +592,10 @@ const adminJs = new AdminJS({
           platformId: {
             description: 'Must match platform ID: Consensus, CoddleOnline, or Rhythms24x7'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       }
     },
@@ -584,6 +645,10 @@ const adminJs = new AdminJS({
           buttonLink: {
             description: 'URL for the CTA button (e.g., /contact-us)'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       }
     },
@@ -879,6 +944,21 @@ const adminJs = new AdminJS({
           },
           symbol: {
             description: 'Symbol to display after number (e.g., %, M, +)'
+          }
+        }
+      }
+    },
+    {
+      resource: ContactDetails,
+      options: {
+        parent: { name: 'Contact Page', icon: 'Phone' },
+        listProperties: ['sectionTitle', 'entityName', 'displayOrder', 'isActive'],
+        editProperties: ['sectionTitle', 'entityName', 'address', 'phoneNumbers', 'fax', 'emails', 'displayOrder', 'isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' },
+        properties: {
+          address: {
+            type: 'textarea',
+            props: { rows: 4 }
           }
         }
       }
