@@ -98,3 +98,59 @@ router.delete('/content-image/:filename', (req, res) => {
 });
 
 module.exports = router;
+
+// Helper function to recursively get files
+const getFilesRecursively = (dir, fileList = [], baseDir = '') => {
+  const files = fs.readdirSync(dir);
+  
+  files.forEach(file => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    
+    if (stat.isDirectory()) {
+      getFilesRecursively(filePath, fileList, path.join(baseDir, file));
+    } else {
+      if (/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file)) {
+        fileList.push({
+          name: file,
+          path: '/uploads/' + (baseDir ? baseDir.replace(/\\/g, '/') + '/' : '') + file,
+          relativePath: (baseDir ? baseDir.replace(/\\/g, '/') + '/' : '') + file,
+          size: stat.size,
+          created: stat.birthtime
+        });
+      }
+    }
+  });
+  
+  return fileList;
+};
+
+// GET /api/upload/files - List all uploaded files
+router.get('/files', (req, res) => {
+  try {
+    const uploadBaseDir = path.join(__dirname, '../../uploads');
+    
+    if (!fs.existsSync(uploadBaseDir)) {
+      return res.json({ success: true, files: [] });
+    }
+    
+    // We want to scan specific subdirectories to keep it clean, or just scan all
+    // Let's scan all but organize them flattened for the gallery
+    const files = getFilesRecursively(uploadBaseDir);
+    
+    // Sort by creation date desc
+    files.sort((a, b) => b.created - a.created);
+    
+    res.json({
+      success: true,
+      count: files.length,
+      files: files
+    });
+  } catch (error) {
+    console.error('List files error:', error);
+    res.status(500).json({
+      error: 'Failed to list files',
+      message: error.message
+    });
+  }
+});

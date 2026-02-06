@@ -4,6 +4,7 @@ const componentLoader = new ComponentLoader();
 const path = require('path');
 
 const uploadToolComponent = componentLoader.add('UploadTool', path.resolve(__dirname, './components/upload-tool.jsx'));
+const mediaGalleryComponent = componentLoader.add('MediaGallery', path.resolve(__dirname, './components/media-gallery.jsx'));
 const AdminJSSequelize = require('@adminjs/sequelize');
 const uploadFeature = require('@adminjs/upload');
 const Dashboard = require('./dashboard');
@@ -139,6 +140,15 @@ const adminJs = new AdminJS({
       handler: async (request, response, context) => {
         return {
           text: 'Upload Media'
+        }
+      }
+    },
+    'Media Gallery': {
+      component: mediaGalleryComponent,
+      icon: 'Image',
+      handler: async (request, response, context) => {
+        return {
+          text: 'Media Gallery'
         }
       }
     }
@@ -722,8 +732,63 @@ const adminJs = new AdminJS({
       options: {
         parent: { name: 'Home Page', icon: 'Home' },
         listProperties: ['sectionTitle', 'sectionSubtitle', 'isActive'],
-        editProperties: ['sectionTitle', 'sectionSubtitle', 'feature1Title', 'feature2Title', 'feature3Title', 'feature4Title', 'isActive']
-      }
+        editProperties: [
+          'sectionTitle', 'sectionSubtitle', 
+          'feature1Title', 'feature1Icon',
+          'feature2Title', 'feature2Icon',
+          'feature3Title', 'feature3Icon',
+          'feature4Title', 'feature4Icon',
+          'isActive'
+        ],
+        properties: {
+          feature1Icon: { description: 'Enter icon path or full URL from upload tool' },
+          feature2Icon: { description: 'Enter icon path or full URL from upload tool' },
+          feature3Icon: { description: 'Enter icon path or full URL from upload tool' },
+          feature4Icon: { description: 'Enter icon path or full URL from upload tool' }
+        }
+      },
+      features: [
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/features') } },
+          properties: { 
+            key: 'feature1Icon',
+            bucket: 'feature1Bucket',
+            file: 'feature1File',
+            filePath: 'feature1FilePath',
+            filesToDelete: 'feature1FilesToDelete'
+          }
+        }),
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/features') } },
+          properties: { 
+            key: 'feature2Icon',
+            bucket: 'feature2Bucket',
+            file: 'feature2File',
+            filePath: 'feature2FilePath',
+            filesToDelete: 'feature2FilesToDelete'
+          }
+        }),
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/features') } },
+          properties: { 
+            key: 'feature3Icon',
+            bucket: 'feature3Bucket',
+            file: 'feature3File',
+            filePath: 'feature3FilePath',
+            filesToDelete: 'feature3FilesToDelete'
+          }
+        }),
+        uploadFeature({
+          provider: { local: { bucket: path.join(__dirname, '../../uploads/product-details/features') } },
+          properties: { 
+            key: 'feature4Icon',
+            bucket: 'feature4Bucket',
+            file: 'feature4File',
+            filePath: 'feature4FilePath',
+            filesToDelete: 'feature4FilesToDelete'
+          }
+        })
+      ]
     },
     {
       resource: HomeChallenges,

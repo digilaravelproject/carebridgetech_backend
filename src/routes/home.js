@@ -116,7 +116,11 @@ router.get('/home', async (req, res) => {
           feature1_title: features.feature1Title,
           feature2_title: features.feature2Title,
           feature3_title: features.feature3Title,
-          feature4_title: features.feature4Title
+          feature4_title: features.feature4Title,
+          feature1_icon: addUploadUrl(features.feature1Icon),
+          feature2_icon: addUploadUrl(features.feature2Icon),
+          feature3_icon: addUploadUrl(features.feature3Icon),
+          feature4_icon: addUploadUrl(features.feature4Icon)
         } : null,
         
         challenges: challengesSection ? {

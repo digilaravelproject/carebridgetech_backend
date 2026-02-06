@@ -37,6 +37,26 @@ const HomeFeatures = sequelize.define('HomeFeatures', {
     allowNull: false,
     field: 'feature4_title'
   },
+  feature1Icon: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    field: 'feature1_icon'
+  },
+  feature2Icon: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    field: 'feature2_icon'
+  },
+  feature3Icon: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    field: 'feature3_icon'
+  },
+  feature4Icon: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    field: 'feature4_icon'
+  },
   isActive: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,

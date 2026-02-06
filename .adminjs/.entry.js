@@ -83,5 +83,31 @@ import Component40 from '../node_modules/@adminjs/upload/src/features/upload-fil
 AdminJS.UserComponents.Component40 = Component40
 import Component41 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
 AdminJS.UserComponents.Component41 = Component41
+import Component42 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component42 = Component42
+import Component43 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component43 = Component43
+import Component44 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component44 = Component44
+import Component45 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component45 = Component45
+import Component46 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component46 = Component46
+import Component47 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component47 = Component47
+import Component48 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component48 = Component48
+import Component49 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component49 = Component49
+import Component50 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component50 = Component50
+import Component51 from '../node_modules/@adminjs/upload/src/features/upload-file/components/edit'
+AdminJS.UserComponents.Component51 = Component51
+import Component52 from '../node_modules/@adminjs/upload/src/features/upload-file/components/list'
+AdminJS.UserComponents.Component52 = Component52
+import Component53 from '../node_modules/@adminjs/upload/src/features/upload-file/components/show'
+AdminJS.UserComponents.Component53 = Component53
 import UploadTool from '../src/admin/components/upload-tool'
 AdminJS.UserComponents.UploadTool = UploadTool
+import MediaGallery from '../src/admin/components/media-gallery'
+AdminJS.UserComponents.MediaGallery = MediaGallery
