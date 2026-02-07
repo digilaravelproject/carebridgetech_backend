@@ -79,24 +79,36 @@ router.get('/', async (req, res) => {
 
       // 🔹 Normalize gallery images
       let normalizedGallery = [];
+      
+      const parseStringList = (str) => {
+        if (!str) return [];
+        // Split by newline or comma. Also handle escaped newlines if they appear as literal characters.
+        return str
+          .split(/\\r\\n|\\n|\\r|\r\n|\n|\r|,/)
+          .map(s => s.trim())
+          // Remove wrapping quotes if present
+          .map(s => s.replace(/^["']|["']$/g, ''))
+          .filter(s => s.length > 0 && !['[', ']'].includes(s));
+      };
+
       if (Array.isArray(galleryImages)) {
         normalizedGallery = galleryImages;
       } else if (typeof galleryImages === 'string') {
         try {
+          // Try parsing as JSON first
           const parsed = JSON.parse(galleryImages);
           if (Array.isArray(parsed)) {
             normalizedGallery = parsed;
+          } else if (typeof parsed === 'string') {
+            // If it parses to a string, try splitting that string
+            normalizedGallery = parseStringList(parsed);
           } else {
-            normalizedGallery = galleryImages
-              .split(/\r?\n|(?<=\.png|\.jpg|\.jpeg|\.webp)(?=\/uploads)/gi)
-              .map(s => s.trim())
-              .filter(Boolean);
+             // If parsing resulted in object (not array) or something else
+             normalizedGallery = [];
           }
-        } catch {
-          normalizedGallery = galleryImages
-            .split(/\r?\n|(?<=\.png|\.jpg|\.jpeg|\.webp)(?=\/uploads)/gi)
-            .map(s => s.trim())
-            .filter(Boolean);
+        } catch (e) {
+          // If JSON parse fails, treat as raw string list
+          normalizedGallery = parseStringList(galleryImages);
         }
       } else if (typeof galleryImages === 'object' && galleryImages !== null) {
         normalizedGallery = Object.values(galleryImages);

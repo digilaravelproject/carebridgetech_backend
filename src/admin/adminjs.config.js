@@ -103,6 +103,78 @@ const fixPlatformId = async (request, context) => {
   return request;
 };
 
+// Hook to process array fields (galleryImages, specifications) from textarea (newline separated) to JSON array
+const processProductArrays = async (request, context) => {
+  const { payload = {}, method } = request;
+  
+  // Only process on POST (create/update)
+  if (method.toLowerCase() !== 'post') return request;
+
+  const arrayFields = ['galleryImages', 'specifications'];
+
+  for (const field of arrayFields) {
+    if (payload[field] && typeof payload[field] === 'string') {
+      // Check if it's already a JSON string
+      try {
+        const parsed = JSON.parse(payload[field]);
+        if (Array.isArray(parsed)) {
+          payload[field] = parsed;
+          continue;
+        }
+      } catch (e) {
+        // Not a JSON string, proceed to split
+      }
+
+      // Split by newline, trim, and remove empty lines
+      const items = payload[field]
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+      
+      // Update payload with array
+      payload[field] = items;
+    }
+  }
+  
+  return request;
+};
+
+// Hook to format array fields for edit/show (array to newline separated string)
+const formatProductArrays = async (response, request, context) => {
+  const { record } = response;
+  
+  if (record && record.params) {
+    const arrayFields = ['galleryImages', 'specifications'];
+
+    for (const field of arrayFields) {
+      if (record.params[field]) {
+        let items = record.params[field];
+        let itemArray = [];
+
+        // If it's already an array
+        if (Array.isArray(items)) {
+          itemArray = items;
+        } else if (typeof items === 'string') {
+          try {
+            const parsed = JSON.parse(items);
+            if (Array.isArray(parsed)) {
+              itemArray = parsed;
+            }
+          } catch (e) {
+            // Not a valid JSON array
+          }
+        }
+        
+        // If we have an array, join it with newlines
+        if (itemArray.length > 0) {
+          record.params[field] = itemArray.join('\n');
+        }
+      }
+    }
+  }
+  return response;
+};
+
 const adminJs = new AdminJS({
   rootPath: '/admin',
   branding: {
@@ -225,14 +297,28 @@ const adminJs = new AdminJS({
           specifications: {
             type: 'textarea',
             props: {
-              rows: 6
-            }
+              rows: 6,
+              placeholder: 'Enter one specification per line.\nExample:\n5" Color TFT display\n12 Leads simultaneous ECG'
+            },
+            description: 'Enter each specification on a new line. They will be stored as an array.'
           },
           galleryImages: {
             type: 'textarea',
             props: {
-              rows: 4
-            }
+              rows: 6,
+              placeholder: 'Enter one image URL per line.\nExample:\n/images/img1.png\n/images/img2.png'
+            },
+            description: 'Enter each image URL on a new line. They will be stored as an array.'
+          }
+        },
+        actions: {
+          new: { before: [processProductArrays] },
+          edit: { 
+            before: [processProductArrays],
+            after: [formatProductArrays]
+          },
+          show: {
+            after: [formatProductArrays]
           }
         }
       },
