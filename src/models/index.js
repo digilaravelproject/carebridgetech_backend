@@ -4,6 +4,7 @@ const sequelize = require('../config/database');
 const ContentItem = require('./ContentItem');
 const TeamMember = require('./TeamMember');
 const Product = require('./Product');
+const ProductCategory = require('./ProductCategory'); // [NEW] Import Category Model
 const CompanyLogo = require('./CompanyLogo');
 const FormSubmission = require('./FormSubmission');
 const MenuItem = require('./MenuItem');
@@ -38,7 +39,10 @@ const AboutMissionFeature = require('./AboutMissionFeature');
 const AboutStatistic = require('./AboutStatistic');
 const ContactDetails = require('./ContactDetails');
 
-// No relationships needed for the simplified schema
+// No relationships needed for the simplified schema - OLD COMMENT
+// NEW: Define Product Category Relationship
+ProductCategory.hasMany(Product, { foreignKey: 'categoryKey', sourceKey: 'categoryKey' });
+Product.belongsTo(ProductCategory, { foreignKey: 'categoryKey', targetKey: 'categoryKey', as: 'category' });
 
 // Define relationships for dynamic AdminJS dropdowns
 // This tells AdminJS to fetch available platforms from the database and use platformId (string) as the link
@@ -77,6 +81,7 @@ module.exports = {
   ContentItem,
   TeamMember,
   Product,
+  ProductCategory, // [NEW] Export Category Model
   CompanyLogo,
   FormSubmission,
   MenuItem,

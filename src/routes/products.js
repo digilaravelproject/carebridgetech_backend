@@ -30,103 +30,85 @@ router.get('/category', async (req, res) => {
 // GET /api/products - Get all products grouped by category
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.findAll({
-      where: { status: 'active' },
-      order: [['categoryKey', 'ASC'], ['displayOrder', 'ASC']]
+    const uploadUrl = process.env.UPLOAD_URL || '';
+
+    // Fetch Categories with their Products
+    const categories = await require('../models').ProductCategory.findAll({
+      where: { isActive: true },
+      order: [
+        ['displayOrder', 'ASC'],
+        [{ model: Product, as: 'Products' }, 'displayOrder', 'ASC']
+      ],
+      include: [{
+        model: Product,
+        as: 'Products',
+        where: { status: 'active' },
+        required: false // Include categories even if they have no active products (optional, change to true if only non-empty needed)
+      }]
     });
 
-    const groupedProducts = {};
-
-    products.forEach(({
-      id,
-      categoryKey,
-      productName,
-      specifications,
-      mainImage,
-      galleryImages,
-      brochureUrl
-    }) => {
-      if (!groupedProducts[categoryKey]) {
-        groupedProducts[categoryKey] = [];
-      }
-
-      const uploadUrl = process.env.UPLOAD_URL;
-
-      // 🔹 Normalize specifications
-      let normalizedSpecifications = [];
-      if (Array.isArray(specifications)) {
-        normalizedSpecifications = specifications;
-      } else if (typeof specifications === 'string') {
-        try {
-          const parsed = JSON.parse(specifications);
-          if (Array.isArray(parsed)) {
-            normalizedSpecifications = parsed;
-          } else {
-            normalizedSpecifications = specifications
-              .split(/\r?\n|,/g) // Split by line breaks or commas
-              .map(s => s.trim())
-              .filter(Boolean);
+    const formattedCategories = categories.map(category => {
+      const products = category.Products.map(product => {
+        // 🔹 Normalize specifications
+        let normalizedSpecifications = [];
+        const { specifications, galleryImages, mainImage } = product;
+        
+        if (Array.isArray(specifications)) {
+          normalizedSpecifications = specifications;
+        } else if (typeof specifications === 'string') {
+          try {
+            const parsed = JSON.parse(specifications);
+            if (Array.isArray(parsed)) normalizedSpecifications = parsed;
+            else normalizedSpecifications = specifications.split(/\r?\n|,/g).map(s => s.trim()).filter(Boolean);
+          } catch {
+            normalizedSpecifications = specifications.split(/\r?\n|,/g).map(s => s.trim()).filter(Boolean);
           }
-        } catch {
-          normalizedSpecifications = specifications
-            .split(/\r?\n|,/g)
+        }
+
+        // 🔹 Normalize gallery images
+        let normalizedGallery = [];
+        const parseStringList = (str) => {
+          if (!str) return [];
+          return str.split(/\\r\\n|\\n|\\r|\r\n|\n|\r|,/)
             .map(s => s.trim())
-            .filter(Boolean);
-        }
-      } else if (typeof specifications === 'object' && specifications !== null) {
-        normalizedSpecifications = Object.values(specifications);
-      }
+            .map(s => s.replace(/^["']|["']$/g, ''))
+            .filter(s => s.length > 0 && !['[', ']'].includes(s));
+        };
 
-      // 🔹 Normalize gallery images
-      let normalizedGallery = [];
-      
-      const parseStringList = (str) => {
-        if (!str) return [];
-        // Split by newline or comma. Also handle escaped newlines if they appear as literal characters.
-        return str
-          .split(/\\r\\n|\\n|\\r|\r\n|\n|\r|,/)
-          .map(s => s.trim())
-          // Remove wrapping quotes if present
-          .map(s => s.replace(/^["']|["']$/g, ''))
-          .filter(s => s.length > 0 && !['[', ']'].includes(s));
-      };
-
-      if (Array.isArray(galleryImages)) {
-        normalizedGallery = galleryImages;
-      } else if (typeof galleryImages === 'string') {
-        try {
-          // Try parsing as JSON first
-          const parsed = JSON.parse(galleryImages);
-          if (Array.isArray(parsed)) {
-            normalizedGallery = parsed;
-          } else if (typeof parsed === 'string') {
-            // If it parses to a string, try splitting that string
-            normalizedGallery = parseStringList(parsed);
-          } else {
-             // If parsing resulted in object (not array) or something else
-             normalizedGallery = [];
+        if (Array.isArray(galleryImages)) {
+          normalizedGallery = galleryImages;
+        } else if (typeof galleryImages === 'string') {
+          try {
+            const parsed = JSON.parse(galleryImages);
+            if (Array.isArray(parsed)) normalizedGallery = parsed;
+            else if (typeof parsed === 'string') normalizedGallery = parseStringList(parsed);
+            else normalizedGallery = [];
+          } catch (e) {
+            normalizedGallery = parseStringList(galleryImages);
           }
-        } catch (e) {
-          // If JSON parse fails, treat as raw string list
-          normalizedGallery = parseStringList(galleryImages);
         }
-      } else if (typeof galleryImages === 'object' && galleryImages !== null) {
-        normalizedGallery = Object.values(galleryImages);
-      }
 
-      // 🔹 Push final product entry
-      groupedProducts[categoryKey].push({
-        id,
-        productName,
-        specifications: normalizedSpecifications,
-        mainImage: mainImage ? `${uploadUrl}${mainImage}` : null,
-        galleryImages: normalizedGallery.map(img => `${uploadUrl}${img}`),
-        brochureUrl
+        return {
+          id: product.id,
+          productName: product.productName,
+          specifications: normalizedSpecifications,
+          mainImage: mainImage ? (mainImage.startsWith('http') ? mainImage : `${uploadUrl}${mainImage}`) : null,
+          galleryImages: normalizedGallery.map(img => img.startsWith('http') ? img : `${uploadUrl}${img}`),
+          brochureUrl: product.brochureUrl
+        };
       });
+
+      return {
+        id: category.id,
+        categoryKey: category.categoryKey,
+        displayName: category.displayName,
+        description: category.description,
+        products: products
+      };
     });
 
     res.json({
-      productsByCategory: groupedProducts
+      categories: formattedCategories
     });
   } catch (error) {
     console.error('Error fetching products:', error);

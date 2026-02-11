@@ -17,6 +17,7 @@ const {
   ContentItem,
   TeamMember,
   Product,
+  ProductCategory, // [NEW] Import Category Model
   CompanyLogo,
   FormSubmission,
   MenuItem,
@@ -101,6 +102,64 @@ const fixPlatformId = async (request, context) => {
   }
   
   return request;
+};
+
+const fixCategoryKey = async (request, context) => {
+  const { payload = {}, method } = request;
+  if (method.toLowerCase() !== 'post') return request;
+
+  if (payload.category) {
+    const categoryPk = parseInt(payload.category, 10);
+    if (!isNaN(categoryPk)) {
+      // Database se us ID ka categoryKey (string) dhundiye
+      const category = await ProductCategory.findByPk(categoryPk);
+      if (category) {
+        // ID ki jagah string value ("devices") set karein
+        payload.categoryKey = category.categoryKey;
+      }
+    }
+  }
+  return request;
+};
+
+// Hook to populate category params with ID for AdminJS display (reverse of fixCategoryKey)
+const fillCategoryData = async (response, request, context) => {
+  const { records, record } = response;
+
+  if (!records && !record) return response;
+
+  const getKeys = (items) => {
+    const keys = [];
+    if (Array.isArray(items)) {
+      items.forEach(i => { if(i.params.categoryKey) keys.push(i.params.categoryKey); });
+    } else if (items && items.params.categoryKey) {
+      keys.push(items.params.categoryKey);
+    }
+    return keys;
+  };
+
+  const keys = getKeys(records || record);
+  if (keys.length === 0) return response;
+
+  const uniqueKeys = [...new Set(keys)];
+  const categories = await ProductCategory.findAll({
+    where: { categoryKey: uniqueKeys },
+    attributes: ['id', 'categoryKey']
+  });
+
+  const mapKeyToId = {};
+  categories.forEach(c => mapKeyToId[c.categoryKey] = c.id);
+
+  const populate = (rec) => {
+    if (rec.params.categoryKey && mapKeyToId[rec.params.categoryKey]) {
+      rec.params.category = mapKeyToId[rec.params.categoryKey];
+    }
+  };
+
+  if (record) populate(record);
+  if (records) records.forEach(populate);
+
+  return response;
 };
 
 // Hook to process array fields (galleryImages, specifications) from textarea (newline separated) to JSON array
@@ -289,9 +348,9 @@ const adminJs = new AdminJS({
       resource: Product,
       options: {
         parent: { name: 'Product Management', icon: 'Package' },
-        listProperties: ['productName', 'categoryKey', 'status', 'displayOrder'],
-        editProperties: ['categoryKey', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
-        filterProperties: ['categoryKey', 'status'],
+        listProperties: ['productName', 'category', 'status', 'displayOrder'],
+        editProperties: ['category', 'productName', 'specifications', 'mainImage', 'galleryImages', 'brochureUrl', 'displayOrder', 'status'],
+        filterProperties: ['category', 'status'],
         sort: { sortBy: 'displayOrder', direction: 'asc' },
         properties: {
           specifications: {
@@ -301,6 +360,14 @@ const adminJs = new AdminJS({
               placeholder: 'Enter one specification per line.\nExample:\n5" Color TFT display\n12 Leads simultaneous ECG'
             },
             description: 'Enter each specification on a new line. They will be stored as an array.'
+          },
+          categoryKey: {
+            isVisible: false
+          },
+          category: { // [NEW] Use the alias
+            description: 'Select the category for this product.',
+            reference: 'product_categories',
+            isVisible: { list: true, filter: true, show: true, edit: true },
           },
           galleryImages: {
             type: 'textarea',
@@ -312,13 +379,16 @@ const adminJs = new AdminJS({
           }
         },
         actions: {
-          new: { before: [processProductArrays] },
+          new: { before: [fixCategoryKey, processProductArrays] },
           edit: { 
-            before: [processProductArrays],
-            after: [formatProductArrays]
+            before: [fixCategoryKey, processProductArrays],
+            after: [fillCategoryData, formatProductArrays]
           },
           show: {
-            after: [formatProductArrays]
+            after: [fillCategoryData, formatProductArrays]
+          },
+          list: {
+            after: [fillCategoryData]
           }
         }
       },
@@ -328,6 +398,18 @@ const adminJs = new AdminJS({
           properties: { key: 'mainImage', bucket: 'productImages' }
         })
       ]
+    },
+    {
+      resource: ProductCategory,
+      options: {
+        id: 'product_categories',
+        titleProperty: 'displayName',
+        parent: { name: 'Product Management', icon: 'Package' },
+        listProperties: ['displayName', 'categoryKey', 'isActive', 'displayOrder'],
+        editProperties: ['displayName', 'categoryKey', 'description', 'isActive', 'displayOrder'],
+        filterProperties: ['isActive'],
+        sort: { sortBy: 'displayOrder', direction: 'asc' }
+      }
     },
     {
       resource: CompanyLogo,

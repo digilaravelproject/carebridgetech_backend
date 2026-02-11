@@ -9,6 +9,7 @@ const {
   NewsArticle,
   NewsPageSettings,
   Platform,
+  ProductCategory, // [NEW] Import Category Model
   ContactDetails
 } = require('../models');
 
@@ -115,6 +116,20 @@ async function seedInitialData() {
       await TeamMember.findOrCreate({
         where: { name: member.name },
         defaults: member
+      });
+    }
+
+    // Seed Product Categories
+    const categories = [
+      { categoryKey: 'devices', displayName: 'Devices', description: 'Medical devices and equipment', displayOrder: 1 },
+      { categoryKey: 'kiosks', displayName: 'Kiosks', description: 'Self-service health kiosks', displayOrder: 2 },
+      { categoryKey: 'kits', displayName: 'Kits', description: 'Medical kits and packages', displayOrder: 3 }
+    ];
+
+    for (const category of categories) {
+      await ProductCategory.findOrCreate({
+        where: { categoryKey: category.categoryKey },
+        defaults: category
       });
     }
 
