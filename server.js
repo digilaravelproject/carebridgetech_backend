@@ -67,6 +67,10 @@ app.use(cors('*'));
 const adminRouter = AdminJSExpress.buildAuthenticatedRouter(adminJs, {
   authenticate: authConfig.authenticate,
   cookiePassword: authConfig.cookiePassword
+}, null, {
+  resave: false,
+  saveUninitialized: true,
+  secret: authConfig.cookiePassword
 });
 
 // Add upload tool redirect route BEFORE AdminJS routes  

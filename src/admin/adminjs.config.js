@@ -843,6 +843,10 @@ const adminJs = new AdminJS({
           imageUrl: {
             description: 'Enter image path or full URL from upload tool'
           }
+        },
+        actions: {
+          new: { before: [fixPlatformId] },
+          edit: { before: [fixPlatformId] }
         }
       },
       features: [
