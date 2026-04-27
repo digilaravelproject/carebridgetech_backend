@@ -59,7 +59,8 @@ router.get('/pages', async (req, res) => {
         imageUrl: `${process.env.UPLOAD_URL}${article.imageUrl}`,
         author: article.author,
         authorPosition: article.authorPosition,
-        authorCompany: article.authorCompany
+        authorCompany: article.authorCompany,
+        videoUrl: article.videoUrl
       }))
     });
   } catch (error) {

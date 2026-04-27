@@ -107,6 +107,7 @@ router.get('/home', async (req, res) => {
           main_text: hero.mainText,
           description: hero.description,
           button_text: hero.buttonText,
+          button_link: hero.buttonLink,
           image: addUploadUrl(hero.image)
         } : null,
         

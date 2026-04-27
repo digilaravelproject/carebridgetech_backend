@@ -31,6 +31,11 @@ const HomeHero = sequelize.define('HomeHero', {
     allowNull: false,
     field: 'button_text'
   },
+  buttonLink: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    field: 'button_link'
+  },
   image: {
     type: DataTypes.STRING(500),
     allowNull: false

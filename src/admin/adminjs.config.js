@@ -234,6 +234,28 @@ const formatProductArrays = async (response, request, context) => {
   return response;
 };
 
+// Hook to validate YouTube URL for News Articles
+const validateYouTubeUrl = async (request, context) => {
+  if (request.method !== 'post') return request;
+
+  const { videoUrl } = request.payload || {};
+  
+  if (videoUrl && videoUrl.trim() !== '') {
+    // Basic YouTube URL regex (matches youtube.com, youtu.be, etc)
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+    if (!youtubeRegex.test(videoUrl)) {
+      throw new AdminJS.ValidationError({
+        videoUrl: {
+          message: 'Please enter a valid YouTube video URL format like https://www.youtube.com/watch?v=...',
+        }
+      }, {
+        message: 'Validation Error: Invalid YouTube URL'
+      });
+    }
+  }
+  return request;
+};
+
 const adminJs = new AdminJS({
   rootPath: '/admin',
   branding: {
@@ -475,7 +497,14 @@ const adminJs = new AdminJS({
             props: {
               rows: 8
             }
+          },
+          videoUrl: {
+            description: 'Please enter a valid YouTube video URL format like https://www.youtube.com/watch?v=...'
           }
+        },
+        actions: {
+          new: { before: [validateYouTubeUrl] },
+          edit: { before: [validateYouTubeUrl] }
         }
       },
       features: [
@@ -887,11 +916,14 @@ const adminJs = new AdminJS({
       options: {
         parent: { name: 'Home Page', icon: 'Home' },
         listProperties: ['mainTitle', 'subTitle', 'mainText', 'isActive'],
-        editProperties: ['mainTitle', 'subTitle', 'mainText', 'description', 'buttonText', 'image', 'isActive'],
+        editProperties: ['mainTitle', 'subTitle', 'mainText', 'description', 'buttonText', 'buttonLink', 'image', 'isActive'],
         properties: {
           description: {
             type: 'textarea',
             props: { rows: 3 }
+          },
+          buttonLink: {
+            description: 'URL for the hero section button (e.g., /about-us)'
           },
           image: {
             description: 'Enter image path (e.g., /images/home-img.png) or full URL from upload tool'
